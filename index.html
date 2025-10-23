@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngelAI - Skincare Recommendation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :root {
+            --tiffany: #0fb5d9;
+            --tiffany-light: #e0f7fd;
+            --tiffany-dark: #0a94b0;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f9fafb 0%, #f0f9fb 100%);
+            color: var(--gray-900);
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 181, 217, 0.1);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--tiffany) 0%, var(--tiffany-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 11px;
+            color: var(--gray-400);
+            margin-top: 4px;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            gap: 12px;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(15, 181, 217, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(15, 181, 217, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 14px;
+            border-bottom: 1px solid rgba(15, 181, 217, 0.1);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-900);
+        }
+
+        .faq-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .faq-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .faq-list::-webkit-scrollbar-thumb {
+            background: rgba(15, 181, 217, 0.2);
+            border-radius: 2px;
+        }
+
+        .faq-item {
+            padding: 8px 10px;
+            background: rgba(15, 181, 217, 0.05);
+            border: 1px solid rgba(15, 181, 217, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 11px;
+            color: var(--gray-600);
+            transition: all 0.2s ease;
+            line-height: 1.3;
+            text-align: left;
+        }
+
+        .faq-item:hover {
+            background: rgba(15, 181, 217, 0.1);
+            border-color: rgba(15, 181, 217, 0.2);
+            color: var(--tiffany);
+        }
+
+        .faq-item.active {
+            background: rgba(15, 181, 217, 0.15);
+            border-color: var(--tiffany);
+            color: var(--tiffany);
+            font-weight: 500;
+        }
+
+        .sidebar-footer {
+            padding: 10px;
+            border-top: 1px solid rgba(15, 181, 217, 0.1);
+        }
+
+        .new-chat-btn {
+            width: 100%;
+            padding: 8px;
+            background: linear-gradient(135deg, var(--tiffany) 0%, var(--tiffany-dark) 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .new-chat-btn:active {
+            transform: scale(0.98);
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(15, 181, 217, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(15, 181, 217, 0.08);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(15, 181, 217, 0.2);
+            border-radius: 2px;
+        }
+
+        .message {
+            display: flex;
+            gap: 8px;
+            animation: slideIn 0.3s ease;
+            max-width: 100%;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.ai {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 10px 12px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message.ai .message-bubble {
+            background: rgba(15, 181, 217, 0.08);
+            border: 1px solid rgba(15, 181, 217, 0.15);
+            color: var(--gray-900);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, rgba(15, 181, 217, 0.15) 0%, rgba(15, 181, 217, 0.08) 100%);
+            border: 1px solid rgba(15, 181, 217, 0.2);
+            color: var(--gray-900);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 3px;
+            padding: 8px 12px;
+        }
+
+        .typing-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--tiffany);
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .option-btn {
+            padding: 8px 10px;
+            background: rgba(15, 181, 217, 0.1);
+            border: 1.5px solid rgba(15, 181, 217, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gray-600);
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:active {
+            background: rgba(15, 181, 217, 0.2);
+            border-color: var(--tiffany);
+            color: var(--tiffany);
+        }
+
+        .option-btn.selected {
+            background: rgba(15, 181, 217, 0.2);
+            border-color: var(--tiffany);
+            color: var(--tiffany);
+            font-weight: 600;
+        }
+
+        .proceed-btn {
+            padding: 8px 10px;
+            background: linear-gradient(135deg, var(--tiffany) 0%, var(--tiffany-dark) 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .proceed-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .proceed-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .input-area {
+            padding: 12px;
+            border-top: 1px solid rgba(15, 181, 217, 0.1);
+            display: flex;
+            gap: 8px;
+        }
+
+        .input-wrapper {
+            flex: 1;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            background: rgba(15, 181, 217, 0.05);
+            border: 1px solid rgba(15, 181, 217, 0.15);
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            color: var(--gray-900);
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: rgba(15, 181, 217, 0.3);
+            background: rgba(15, 181, 217, 0.08);
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--gray-400);
+        }
+
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--tiffany) 0%, var(--tiffany-dark) 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .sidebar {
+                width: 240px;
+            }
+
+            .chat-messages {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .message-bubble {
+                max-width: 85%;
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 12px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .tagline {
+                font-size: 10px;
+            }
+
+            .main-wrapper {
+                flex-direction: column;
+                gap: 6px;
+                padding: 6px;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 120px;
+            }
+
+            .faq-list {
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 6px;
+            }
+
+            .faq-item {
+                white-space: nowrap;
+                flex-shrink: 0;
+                font-size: 10px;
+                padding: 6px 8px;
+            }
+
+            .chat-container {
+                flex: 1;
+                border-radius: 16px;
+            }
+
+            .chat-messages {
+                padding: 8px;
+                gap: 6px;
+            }
+
+            .message-bubble {
+                max-width: 90%;
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .input-area {
+                padding: 8px;
+                gap: 6px;
+            }
+
+            .input-wrapper {
+                min-width: 0;
+            }
+
+            input[type="text"] {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .send-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .option-btn {
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+
+            .proceed-btn {
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+
+            .sidebar-header {
+                font-size: 12px;
+                padding: 10px;
+            }
+
+            .new-chat-btn {
+                font-size: 11px;
+                padding: 6px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .logo {
+                font-size: 18px;
+            }
+
+            .tagline {
+                font-size: 9px;
+            }
+
+            .message-bubble {
+                max-width: 95%;
+                font-size: 11px;
+            }
+
+            .faq-item {
+                font-size: 9px;
+                padding: 5px 6px;
+            }
+
+            .option-btn {
+                font-size: 10px;
+                padding: 5px 6px;
+            }
+
+            .proceed-btn {
+                font-size: 10px;
+                padding: 5px 6px;
+            }
+
+            input[type="text"] {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+
+            .send-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">AngelAI</div>
+            <div class="tagline">Personalized skincare guide</div>
+        </header>
+
+        <div class="main-wrapper">
+            <div class="sidebar">
+                <div class="sidebar-header">FAQ</div>
+                <div class="faq-list" id="faqList"></div>
+                <div class="sidebar-footer">
+                    <button class="new-chat-btn" onclick="startNewChat()">New</button>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="input-area">
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="messageInput" 
+                            placeholder="Ask..."
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button class="send-btn" onclick="sendMessage()">→</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { key: 'age', text: 'What is your age group?', options: ['Under 18', '18-24', '25-34', '35-44', '45-54', '55+'] },
+            { key: 'skinType', text: 'How would you describe your skin type?', options: ['Oily', 'Dry', 'Combination', 'Normal', 'Sensitive'] },
+            { key: 'afterWash', text: 'How does your skin feel after washing?', options: ['Tight and dry', 'Comfortable', 'Slightly oily', 'Very oily'] },
+            { key: 'concerns', text: 'Select your primary concerns (up to 3)', options: ['Acne', 'Blackheads', 'Redness', 'Dark spots', 'Uneven texture', 'Fine lines', 'Dullness', 'Dehydration', 'Large pores'], multiSelect: true, maxSelect: 3 },
+            { key: 'sunExposure', text: 'How often are you exposed to the sun?', options: ['Rarely', 'Few times a week', 'Daily', 'Prolonged'] },
+            { key: 'sunscreen', text: 'Do you use sunscreen regularly?', options: ['Yes, daily', 'Sometimes', 'Rarely'] },
+            { key: 'climate', text: 'What is your climate type?', options: ['Humid', 'Balanced', 'Dry'] },
+            { key: 'sensitivity', text: 'How sensitive is your skin?', options: ['Very sensitive', 'Somewhat', 'Not sensitive'] },
+            { key: 'budget', text: 'Budget per product?', options: ['Under $15', '$15-$30', '$30-$60', '$60+'] }
+        ];
+
+        const faqs = [
+            { q: 'How does AngelAI work?', a: 'I\'m AngelAI, and I\'m so happy to explain!\n\nI work by asking you thoughtful questions about your skin. Based on your answers, I create a personalized skincare routine for you.\n\nMy recommendations are based on dermatological research. Think of me as your skincare friend!' },
+            { q: 'Is this medical advice?', a: 'I want to be honest and transparent!\n\nNo, my recommendations are educational skincare guidance, not medical advice.\n\nIf you have persistent skin conditions, please consult a dermatologist. Your health is everything to me.' },
+            { q: 'How accurate are the recommendations?', a: 'Great question!\n\nMy recommendations are based on dermatological research. Every person\'s skin is unique.\n\nGive your routine 4-6 weeks and patch test first. Your skin will tell you what it loves!' },
+            { q: 'Can I use all ingredients together?', a: 'I love your enthusiasm!\n\nSome ingredients work beautifully together. Others need to be used at different times.\n\nI\'ll guide you on how to layer everything safely. You\'ve got this!' },
+            { q: 'I have sensitive skin!', a: 'Your sensitive skin deserves extra love!\n\nI prioritize gentle ingredients like Centella Asiatica and Panthenol.\n\nIntroduce products slowly and always patch test. Your comfort is my priority.' },
+            { q: 'When will I see results?', a: 'Patience is beautiful!\n\nMost people see improvements within 4-8 weeks with consistent use.\n\nYou\'re investing in your skin\'s long-term health. I\'m cheering you on!' },
+            { q: 'Do I need all steps?', a: 'Absolutely not!\n\nStart with essentials: cleanser, moisturizer, sunscreen.\n\nAdd treatments gradually. There\'s no pressure to do everything at once.' },
+            { q: 'Sunscreen every day?', a: 'Yes, please!\n\nDaily sunscreen prevents aging and damage. UV rays penetrate windows.\n\nSPF 50+ is amazing. Your future skin will thank you! 💙' }
+        ];
+
+        let currentQuestion = 0;
+        let userResponses = {};
+        let selectedConcerns = [];
+
+        function initChat() {
+            currentQuestion = 0;
+            userResponses = {};
+            selectedConcerns = [];
+            document.getElementById('chatMessages').innerHTML = '';
+            document.getElementById('messageInput').value = '';
+            
+            addBotMessage('Hi there! I\'m AngelAI, your personal skincare companion. 💙\n\nI\'m here to help you discover the perfect skincare routine tailored just for you.\n\nLet\'s get started!');
+            setTimeout(() => showQuestion(), 1200);
+            renderFAQ();
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= questions.length) {
+                generateRecommendation();
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            addBotMessage(q.text);
+            
+            let optionsHtml = '<div class="options">';
+            q.options.forEach(opt => {
+                optionsHtml += `<button class="option-btn" onclick="selectAnswer('${opt}', this)">${opt}</button>`;
+            });
+            optionsHtml += '</div>';
+
+            if (q.multiSelect) {
+                optionsHtml += '<button class="proceed-btn" id="proceedBtn" onclick="completeMultiSelect()" disabled>Select to continue</button>';
+            }
+
+            const lastMessage = document.querySelector('.message:last-child');
+            lastMessage.querySelector('.message-bubble').innerHTML += optionsHtml;
+        }
+
+        function selectAnswer(answer, element) {
+            const q = questions[currentQuestion];
+            
+            if (q.multiSelect) {
+                if (element.classList.contains('selected')) {
+                    element.classList.remove('selected');
+                    selectedConcerns = selectedConcerns.filter(c => c !== answer);
+                } else if (selectedConcerns.length < q.maxSelect) {
+                    element.classList.add('selected');
+                    selectedConcerns.push(answer);
+                } else {
+                    return;
+                }
+                updateProceedBtn();
+            } else {
+                userResponses[q.key] = answer;
+                element.classList.add('selected');
+                addUserMessage(answer);
+                currentQuestion++;
+                setTimeout(() => showQuestion(), 600);
+            }
+        }
+
+        function updateProceedBtn() {
+            const btn = document.getElementById('proceedBtn');
+            if (btn) {
+                if (selectedConcerns.length > 0) {
+                    btn.disabled = false;
+                    btn.textContent = `Continue (${selectedConcerns.length}/${3})`;
+                } else {
+                    btn.disabled = true;
+                    btn.textContent = 'Select to continue';
+                }
+            }
+        }
+
+        function completeMultiSelect() {
+            const q = questions[currentQuestion];
+            userResponses[q.key] = selectedConcerns;
+            addUserMessage(selectedConcerns.join(', '));
+            selectedConcerns = [];
+            currentQuestion++;
+            setTimeout(() => showQuestion(), 600);
+        }
+
+        function generateRecommendation() {
+            addBotMessage('Analyzing your profile...');
+            
+            setTimeout(() => {
+                const skinType = userResponses.skinType || 'normal';
+                const concerns = userResponses.concerns || [];
+                const sunscreen = userResponses.sunscreen || 'sometimes';
+                const sensitivity = userResponses.sensitivity || 'somewhat';
+                
+                addBotMessage(`I've created something special just for you!\n\nFor your ${skinType} skin, here's your personalized routine:`);
+
+                setTimeout(() => {
+                    addBotMessage(`Morning Routine:\n\n1. Gentle cleanser\n2. Vitamin C serum\n3. Lightweight moisturizer\n4. SPF 50+ sunscreen`);
+                }, 500);
+
+                setTimeout(() => {
+                    addBotMessage(`Evening Routine:\n\n1. Gentle cleanser\n2. Targeted treatment serum\n3. Nourishing night moisturizer`);
+                }, 1000);
+
+                if (concerns.length > 0) {
+                    setTimeout(() => {
+                        addBotMessage(`Your Concerns:\n\nI'm focusing on: ${concerns.join(', ')}\n\nBe patient and consistent—you should see improvements within 4-6 weeks!`);
+                    }, 1500);
+                }
+
+                if (sensitivity === 'very') {
+                    setTimeout(() => {
+                        addBotMessage(`Extra Care for Your Sensitive Skin:\n\nIntroduce products one at a time and always patch test first.\n\nStart with essentials and add gradually. Your comfort is everything. 💙`);
+                    }, 2000);
+                }
+
+                if (sunscreen === 'rarely') {
+                    setTimeout(() => {
+                        addBotMessage(`Quick Note on Sunscreen:\n\nI'd love to encourage daily SPF use. It's the most powerful anti-aging tool!\n\nCan we make this a daily habit together?`);
+                    }, 2500);
+                }
+
+                setTimeout(() => {
+                    addBotMessage(`My Tips for Success:\n\n• Give your routine 4-8 weeks\n• Introduce new actives one at a time\n• Always patch test first\n• Listen to your skin\n• Be kind to yourself\n\nYou've got this! 💙`);
+                }, 3000);
+
+                setTimeout(() => {
+                    addBotMessage(`Disclaimer:\n\nMy recommendations are educational and based on dermatological research. They are not medical advice. For persistent skin conditions, consult a dermatologist.\n\n---\n\nCreated by Andy Park`);
+                }, 3500);
+            }, 1200);
+        }
+
+        function addBotMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'message ai';
+            msg.innerHTML = `<div class="message-bubble">${text}</div>`;
+            document.getElementById('chatMessages').appendChild(msg);
+            scrollToBottom();
+        }
+
+        function addUserMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'message user';
+            msg.innerHTML = `<div class="message-bubble">${text}</div>`;
+            document.getElementById('chatMessages').appendChild(msg);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('chatMessages');
+            setTimeout(() => container.scrollTop = container.scrollHeight, 0);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addUserMessage(message);
+            input.value = '';
+
+            addBotMessage('<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>');
+
+            setTimeout(() => {
+                const lastBubble = document.querySelectorAll('.message.ai:last-child .message-bubble')[0];
+                
+                const faqMatch = faqs.find(f => 
+                    message.toLowerCase().includes(f.q.split(' ')[0].toLowerCase())
+                );
+                
+                if (faqMatch) {
+                    lastBubble.textContent = faqMatch.a;
+                } else if (message.toLowerCase().includes('recommend') || message.toLowerCase().includes('routine')) {
+                    lastBubble.textContent = 'Tell me about your skin and I\'ll create a personalized routine for you!';
+                } else if (message.toLowerCase().includes('ingredient')) {
+                    lastBubble.textContent = 'Top actives: Vitamin C, Retinol, Niacinamide, Hyaluronic Acid. What interests you?';
+                } else {
+                    lastBubble.textContent = 'Ask about skincare or check the FAQ! What can I help with?';
+                }
+            }, 1000);
+        }
+
+        function renderFAQ() {
+            const faqList = document.getElementById('faqList');
+            faqList.innerHTML = '';
+            faqs.forEach((faq) => {
+                const item = document.createElement('div');
+                item.className = 'faq-item';
+                item.textContent = faq.q;
+                item.onclick = () => selectFAQ(faq, item);
+                faqList.appendChild(item);
+            });
+        }
+
+        function selectFAQ(faq, element) {
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            addUserMessage(faq.q);
+            
+            setTimeout(() => {
+                addBotMessage(faq.a);
+            }, 400);
+        }
+
+        function startNewChat() {
+            initChat();
+        }
+
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        initChat();
+    </script>
+</body>
+</html>
