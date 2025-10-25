@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AngelAI - Skincare Recommendation</title>
+    <title>AngelAI</title>
     <style>
         * {
             margin: 0;
@@ -231,48 +231,67 @@
         }
 
         .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
         }
 
         .option-btn {
-            padding: 8px 10px;
-            background: rgba(253, 92, 99, 0.1);
-            border: 1.5px solid rgba(253, 92, 99, 0.2);
-            border-radius: 10px;
+            padding: 12px 14px;
+            background: rgba(253, 92, 99, 0.08);
+            border: 1.5px solid rgba(253, 92, 99, 0.15);
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 500;
             color: var(--gray-600);
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(253, 92, 99, 0.04);
+        }
+        
+        .option-btn:hover {
+            background: rgba(253, 92, 99, 0.12);
+            border-color: rgba(253, 92, 99, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(253, 92, 99, 0.12);
         }
 
         .option-btn:active {
-            background: rgba(253, 92, 99, 0.2);
+            background: rgba(253, 92, 99, 0.18);
             border-color: #FD5C63;
             color: #FD5C63;
+            transform: translateY(0);
         }
 
         .option-btn.selected {
-            background: rgba(253, 92, 99, 0.2);
+            background: linear-gradient(135deg, rgba(253, 92, 99, 0.15) 0%, rgba(253, 92, 99, 0.1) 100%);
             border-color: #FD5C63;
             color: #FD5C63;
             font-weight: 600;
+            box-shadow: 0 4px 16px rgba(253, 92, 99, 0.2);
         }
 
         .proceed-btn {
-            padding: 8px 10px;
+            padding: 12px 14px;
             background: linear-gradient(135deg, #FD5C63 0%, #E84A51 100%);
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             color: white;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 10px;
             width: 100%;
+            box-shadow: 0 4px 16px rgba(253, 92, 99, 0.25);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .proceed-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(253, 92, 99, 0.35);
         }
 
         .proceed-btn:disabled {
@@ -327,7 +346,6 @@
                 flex-direction: column;
                 gap: 4px;
                 padding: 4px;
-                height: auto;
             }
 
             .sidebar {
@@ -348,8 +366,6 @@
                 overflow-x: auto;
                 overflow-y: hidden;
                 padding: 6px;
-                max-height: 110px;
-                min-height: 80px;
             }
 
             .faq-item {
@@ -357,19 +373,6 @@
                 flex-shrink: 0;
                 font-size: 10px;
                 padding: 8px 10px;
-                min-height: 40px;
-                display: flex;
-                align-items: center;
-            }
-
-            .sidebar-footer {
-                padding: 6px;
-                flex-shrink: 0;
-            }
-
-            .new-chat-btn {
-                padding: 6px 10px;
-                font-size: 11px;
             }
 
             .chat-container {
@@ -383,15 +386,9 @@
                 font-size: 12px;
             }
 
-            .options {
-                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-                gap: 5px;
-            }
-
             .option-btn {
-                padding: 10px 8px;
-                font-size: 11px;
-                min-height: 40px;
+                padding: 14px 16px;
+                font-size: 13px;
             }
         }
     </style>
@@ -408,7 +405,7 @@
                 <div class="sidebar-header">FAQ</div>
                 <div class="faq-list" id="faqList"></div>
                 <div class="sidebar-footer">
-                    <button class="new-chat-btn" onclick="startNewChat()">New</button>
+                    <button class="new-chat-btn" onclick="startNewChat()">New Chat</button>
                 </div>
             </div>
 
@@ -416,7 +413,7 @@
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="input-area">
                     <div class="input-wrapper">
-                        <input type="text" id="messageInput" placeholder="Ask..." autocomplete="off">
+                        <input type="text" id="messageInput" placeholder="Ask me anything..." autocomplete="off">
                     </div>
                     <button class="send-btn" onclick="sendMessage()">→</button>
                 </div>
@@ -432,33 +429,31 @@
             { key: 'concerns', text: 'What are your main skin concerns? (Select up to 3)', options: ['Acne / Breakouts', 'Blackheads / Large pores', 'Dullness / Uneven tone', 'Redness / Sensitivity', 'Fine lines / Wrinkles', 'Hyperpigmentation / Dark spots', 'Dryness / Dehydration', 'Oil control'], multiSelect: true },
             { key: 'afterWash', text: 'How does your skin feel after cleansing?', options: ['Tight / Dry', 'Comfortable', 'Greasy quickly'] },
             { key: 'sunExposure', text: 'How often are you exposed to the sun?', options: ['Rarely (mostly indoors)', 'Occasionally (a few hours/week)', 'Frequently (daily outdoor exposure)'] },
-            { key: 'climate', text: 'What is your climate type? (Where do you live)', options: ['Dry/Cold', 'Humid/Tropical', 'Moderate/Temperate'] },
+            { key: 'climate', text: 'What is your climate type?', options: ['Dry/Cold', 'Humid/Tropical', 'Moderate/Temperate'] },
             { key: 'stress', text: 'How much stress or sleep deprivation do you experience?', options: ['High stress, poor sleep', 'Moderate stress', 'Low stress, good sleep'] },
-            { key: 'currentProducts', text: 'Which of these do you already use?', options: ['Cleanser', 'Toner', 'Serum', 'Moisturizer', 'Sunscreen', 'Exfoliant (AHA/BHA)', 'Retinol / Retinoid', 'None'], multiSelect: true },
+            { key: 'currentProducts', text: 'Which products do you already use?', options: ['Cleanser', 'Toner', 'Serum', 'Moisturizer', 'Sunscreen', 'Exfoliant (AHA/BHA)', 'Retinol / Retinoid', 'None'], multiSelect: true },
             { key: 'routineSteps', text: 'How many steps do you prefer in your routine?', options: ['Minimal (2-3 steps)', 'Moderate (4-5 steps)', 'Full routine (6+ steps)'] },
             { key: 'budget', text: 'What is your typical budget per product?', options: ['Under $20 (affordable)', '$20-$50 (mid-range)', '$50+ (premium)'] },
-            { key: 'fragrance', text: 'Do you prefer fragrance-free or natural-scented products?', options: ['Fragrance-free', 'Lightly scented', 'No preference'] }
+            { key: 'fragrance', text: 'Do you prefer fragrance-free products?', options: ['Fragrance-free', 'Lightly scented', 'No preference'] }
         ];
 
         const faqs = [
-            { q: 'How does AngelAI work?', a: 'I\'m AngelAI, and I\'m so happy to explain!\n\nI ask you 12 thoughtful questions about your skin, lifestyle, and preferences.\n\nBased on your answers, I create a personalized skincare routine with specific ingredients and steps designed just for you. My recommendations are grounded in dermatological research!' },
-            { q: 'Is this medical advice?', a: 'I want to be honest and transparent!\n\nNo, my recommendations are educational skincare guidance based on dermatological research, not medical advice.\n\nIf you have persistent skin conditions, consult a dermatologist. Your health and safety are everything to me.' },
-            { q: 'When will I see results?', a: 'Patience is beautiful, and consistency is key!\n\nMost people see visible improvements within 4-8 weeks of following their personalized routine regularly.\n\nDifferent concerns show results at different speeds. You\'re investing in your skin\'s long-term health!' },
-            { q: 'I have sensitive skin!', a: 'Your sensitive skin deserves extra love and care!\n\nI prioritize gentle, soothing ingredients like Centella Asiatica, Panthenol, and Ceramides.\n\nIntroduce products one at a time, always patch test, and listen to your skin. Your comfort is my priority.' },
-            { q: 'Why is sunscreen important?', a: 'This is my biggest love letter to your skin!\n\nDaily sunscreen prevents premature aging, dark spots, and sun damage that accumulates over time.\n\nUV rays penetrate windows, so use it even indoors. SPF 50+ is amazing. Your future skin will thank you! ❤️' },
-            { q: 'Can I combine ingredients?', a: 'I love your enthusiasm!\n\nSome ingredients work beautifully together. Others need to be used at different times to prevent irritation.\n\nFor example, strong acids and retinoids should be used on separate nights. I\'ll guide you safely!' },
-            { q: 'Do I need all steps?', a: 'Absolutely not!\n\nStart with essentials: a gentle cleanser, a nourishing moisturizer, and sunscreen.\n\nOnce comfortable, add treatments gradually. There\'s no pressure to do everything at once!' },
-            { q: 'Climate type explanation?', a: 'Great question!\n\nDry/Cold: Winter climates or deserts - skin needs more hydration and heavier moisturizers.\n\nHumid/Tropical: Summer or rainforest climates - skin gets oily, need lighter products.\n\nModerate: Mild weather year-round - balanced routine works best.' }
+            { q: 'How does AngelAI work?', a: 'I\'m AngelAI! 💕\n\nI ask you 12 thoughtful questions about your skin, lifestyle, and preferences.\n\nBased on your answers, I create a personalized skincare routine with specific ingredients and steps designed just for you. My recommendations are grounded in dermatological research!' },
+            { q: 'Is this medical advice?', a: 'No, my recommendations are educational skincare guidance based on dermatological research, not medical advice.\n\nIf you have persistent skin conditions, please consult a dermatologist. Your health and safety are everything to me! 🏥' },
+            { q: 'When will I see results?', a: 'Patience is beautiful, and consistency is key! ✨\n\nMost people see visible improvements within 4-8 weeks of following their personalized routine regularly.\n\nDifferent concerns show results at different speeds. You\'re investing in your skin\'s long-term health!' },
+            { q: 'I have sensitive skin!', a: 'Your sensitive skin deserves extra love! 💙\n\nI prioritize gentle, soothing ingredients like Centella Asiatica, Panthenol, and Ceramides.\n\nIntroduce products one at a time, always patch test, and listen to your skin. Your comfort is my priority.' },
+            { q: 'Why is sunscreen important?', a: 'This is my biggest love letter to your skin! ☀️\n\nDaily sunscreen prevents premature aging, dark spots, and sun damage that accumulates over time.\n\nUV rays penetrate windows, so use it even indoors. SPF 50+ is amazing. Your future skin will thank you! ❤️' },
+            { q: 'Can I combine ingredients?', a: 'I love your enthusiasm! 🌟\n\nSome ingredients work beautifully together. Others need to be used at different times to prevent irritation.\n\nFor example, strong acids and retinoids should be used on separate nights. I\'ll guide you safely!' },
+            { q: 'Do I need all steps?', a: 'Absolutely not! 🙌\n\nStart with essentials: a gentle cleanser, a nourishing moisturizer, and sunscreen.\n\nOnce comfortable, add treatments gradually. There\'s no pressure to do everything at once!' },
+            { q: 'Climate type explanation?', a: 'Great question! 🌍\n\nDry/Cold: Winter climates or deserts - skin needs more hydration and heavier moisturizers.\n\nHumid/Tropical: Summer or rainforest climates - skin gets oily, need lighter products.\n\nModerate: Mild weather year-round - balanced routine works best.' }
         ];
 
         let currentQuestion = 0;
         let userResponses = {};
-        let multiSelectData = {};
 
         function initChat() {
             currentQuestion = 0;
             userResponses = {};
-            multiSelectData = {};
             document.getElementById('chatMessages').innerHTML = '';
             document.getElementById('messageInput').value = '';
             
@@ -547,79 +542,21 @@
         }
 
         function generateRecommendation() {
-            addBotMessage('Analyzing your profile...');
+            addBotMessage('Analyzing your profile... ✨');
             
             setTimeout(() => {
                 const sex = userResponses.sex || 'not specified';
                 const age = userResponses.age || 'not specified';
                 const skinType = userResponses.skinType || 'normal';
                 const concerns = userResponses.concerns || [];
-                const afterWash = userResponses.afterWash || 'comfortable';
-                const sunExposure = userResponses.sunExposure || 'occasionally';
-                const climate = userResponses.climate || 'moderate';
-                const stress = userResponses.stress || 'moderate stress';
-                const currentProducts = userResponses.currentProducts || [];
-                const routineSteps = userResponses.routineSteps || 'moderate';
                 const budget = userResponses.budget || 'mid-range';
-                const fragrance = userResponses.fragrance || 'no preference';
+                const stress = userResponses.stress || 'moderate stress';
+                const sunExposure = userResponses.sunExposure || 'occasionally';
 
-                // Profile Summary
-                addBotMessage('Profile Summary:\n\nSex: ' + sex + '\nAge: ' + age + '\nSkin Type: ' + skinType + '\nConcerns: ' + (concerns.length > 0 ? concerns.join(', ') : 'General maintenance'));
+                addBotMessage('✅ Profile Summary:\n\nSex: ' + sex + '\nAge: ' + age + '\nSkin Type: ' + skinType + '\nConcerns: ' + (concerns.length > 0 ? concerns.join(', ') : 'General maintenance'));
 
-                // Skin Analysis
                 setTimeout(() => {
-                    let analysis = 'Why This Routine:\n\n';
-                    if (skinType === 'Oily') {
-                        analysis += 'Your skin produces excess sebum, which clogs pores and traps bacteria. You need:\n\n• Oil-Control: Niacinamide reduces sebum production by up to 25%\n• Deep Cleansing: Salicylic Acid penetrates pores to remove buildup\n• Lightweight Texture: Heavy moisturizers worsen oiliness\n• Mattifying Products: Keep shine at bay throughout the day\n\nThis prevents acne, blackheads, and that greasy appearance.';
-                    } else if (skinType === 'Dry') {
-                        analysis += 'Your skin lacks natural oils and lipids, making it vulnerable. You need:\n\n• Ceramides: Repair the damaged skin barrier and lock in moisture\n• Hyaluronic Acid: Holds 1000x its weight in water for deep hydration\n• Rich Creams: Provide occlusion to prevent water loss\n• Nourishing Oils: Replenish depleted lipids\n\nThis prevents flaking, irritation, sensitivity, and premature aging.';
-                    } else if (skinType === 'Combination') {
-                        analysis += 'Your skin has different needs in different zones (oily T-zone, dry cheeks). You need:\n\n• Balancing Cleansers: Don\'t strip or leave residue\n• Targeted Treatments: Oil-control serum for T-zone, hydrating for cheeks\n• Flexible Moisturizers: Adjust based on season and skin state\n\nThis prevents over-treating one area while neglecting another.';
-                    } else if (skinType === 'Normal') {
-                        analysis += 'Your skin is naturally balanced, so you need:\n\n• Preventative Care: Antioxidants like Vitamin C prevent future damage\n• Maintenance Routine: Simple but consistent approach\n• SPF Protection: Prevent sun damage before it starts\n\nThis maintains your healthy baseline and prevents future concerns.';
-                    } else if (skinType === 'Sensitive') {
-                        analysis += 'Your skin reacts easily to irritants and has a compromised barrier. You need:\n\n• Minimal Ingredients: Fragrance, alcohol, and strong actives trigger reactions\n• Barrier Support: Ceramides and Panthenol strengthen protective layer\n• Calming Actives: Centella Asiatica reduces inflammation naturally\n• Patch Testing: Always test before full application\n\nThis prevents reactions, redness, and further damage.';
-                    }
-                    addBotMessage(analysis);
-                }, 600);
-
-                // Concerns-specific treatment
-                if (concerns.length > 0) {
-                    setTimeout(() => {
-                        let treatmentMsg = 'Why These Ingredients for Your Concerns:\n\n';
-                        concerns.forEach(concern => {
-                            if (concern.includes('Acne')) {
-                                treatmentMsg += 'Acne: Caused by bacteria, clogged pores, and inflammation. Salicylic Acid unclogs pores, Benzoyl Peroxide kills bacteria, Retinoids promote cell turnover. Start low (0.5-1%) to build tolerance.\n\n';
-                            }
-                            if (concern.includes('Blackheads')) {
-                                treatmentMsg += 'Blackheads: Oxidized sebum trapped in pores. BHA dissolves sebum from inside, clay masks absorb surface oil, retinoids prevent pore buildup.\n\n';
-                            }
-                            if (concern.includes('Dullness')) {
-                                treatmentMsg += 'Dullness: Dead skin cells accumulate and scatter light. Vitamin C brightens, AHA/BHA exfoliate dead skin, revealing luminous skin beneath.\n\n';
-                            }
-                            if (concern.includes('Redness')) {
-                                treatmentMsg += 'Redness: Result of inflammation or damaged barrier. Niacinamide calms, Azelaic Acid reduces redness, Centella soothes irritation.\n\n';
-                            }
-                            if (concern.includes('Fine lines')) {
-                                treatmentMsg += 'Fine Lines: Caused by collagen loss and dehydration. Retinol boosts collagen production, Peptides signal repair, Hyaluronic Acid plumps skin.\n\n';
-                            }
-                            if (concern.includes('Hyperpigmentation')) {
-                                treatmentMsg += 'Dark Spots: Result of excess melanin production. Vitamin C inhibits melanin, Niacinamide reduces production, Alpha Arbutin blocks enzyme, SPF prevents recurrence.\n\n';
-                            }
-                            if (concern.includes('Dryness')) {
-                                treatmentMsg += 'Dehydration: Skin can\'t retain moisture. Hyaluronic Acid holds water, Glycerin attracts moisture, Ceramides seal barrier to prevent loss.\n\n';
-                            }
-                            if (concern.includes('Oil control')) {
-                                treatmentMsg += 'Oil Control: Overactive sebaceous glands need regulation. Niacinamide shrinks pores, Zinc absorbs oil, lightweight formulas prevent buildup.\n\n';
-                            }
-                        });
-                        addBotMessage(treatmentMsg);
-                    }, 1200);
-                }
-
-                // Morning Routine
-                setTimeout(() => {
-                    let morningRoutine = 'Your Morning Routine:\n\n';
+                    let morningRoutine = '☀️ Your Morning Routine:\n\n';
                     morningRoutine += '1. Cleanser: ';
                     if (skinType === 'Oily') {
                         morningRoutine += 'Foaming gel cleanser\n';
@@ -629,15 +566,7 @@
                         morningRoutine += 'Gentle balancing cleanser\n';
                     }
                     
-                    morningRoutine += '2. Treatment: ';
-                    if (concerns.includes('Dullness / Uneven tone')) {
-                        morningRoutine += 'Vitamin C serum (15-20% L-Ascorbic Acid)\n';
-                    } else if (concerns.includes('Hyperpigmentation / Dark spots')) {
-                        morningRoutine += 'Niacinamide serum or Vitamin C with Ferulic Acid\n';
-                    } else {
-                        morningRoutine += 'Antioxidant serum (Vitamin C or Niacinamide)\n';
-                    }
-                    
+                    morningRoutine += '2. Treatment: Vitamin C or Niacinamide serum\n';
                     morningRoutine += '3. Moisturizer: ';
                     if (skinType === 'Oily') {
                         morningRoutine += 'Lightweight gel moisturizer\n';
@@ -649,143 +578,53 @@
                     
                     morningRoutine += '4. SPF: SPF 50+ broad spectrum (reapply every 2 hours if outdoors)';
                     addBotMessage(morningRoutine);
-                }, 1800);
+                }, 800);
 
-                // Evening Routine
                 setTimeout(() => {
-                    let eveningRoutine = 'Your Evening Routine:\n\n';
-                    eveningRoutine += '1. Cleanser: Same as morning\n\n';
-                    eveningRoutine += '2. Exfoliant (2-3x/week): ';
-                    
-                    if (concerns.includes('Acne / Breakouts')) {
-                        eveningRoutine += 'Salicylic Acid (BHA) 2% or Benzoyl Peroxide 2.5%\n\n';
-                    } else if (concerns.includes('Fine lines / Wrinkles')) {
-                        eveningRoutine += 'Retinol 0.3-1% (start 2x/week)\n\n';
-                    } else if (concerns.includes('Dullness / Uneven tone')) {
-                        eveningRoutine += 'Glycolic Acid 5-10% or Lactic Acid\n\n';
-                    } else {
-                        eveningRoutine += 'Gentle exfoliant based on concerns\n\n';
-                    }
-                    
-                    eveningRoutine += '3. Serum: Hydrating serum or targeted treatment\n\n';
-                    eveningRoutine += '4. Moisturizer: Rich night cream\n\n';
-                    
-                    if (skinType === 'Dry') {
-                        eveningRoutine += '5. Optional: Overnight mask or facial oil';
-                    }
-                    
-                    addBotMessage(eveningRoutine);
-                }, 2400);
-
-                // Explain the routine
-                setTimeout(() => {
-                    let explanation = 'Why This Routine Works:\n\n';
-                    
-                    if (skinType === 'Oily') {
-                        explanation += 'Morning: Foaming cleanser removes overnight oil buildup. Vitamin C brightens and protects, while lightweight moisturizer hydrates without clogging. SPF is non-negotiable.\n\nEvening: ';
-                        if (concerns.includes('Acne / Breakouts')) {
-                            explanation += 'Salicylic Acid penetrates pores 3-4x weekly to prevent acne bacteria growth and clogging.';
-                        } else {
-                            explanation += 'Gentle exfoliation removes dead cells without stripping, maintaining oil balance.';
-                        }
-                    } else if (skinType === 'Dry') {
-                        explanation += 'Morning: Creamy cleanser preserves natural oils. Antioxidants protect. Rich moisturizer seals hydration barrier.\n\nEvening: ';
-                        if (concerns.includes('Fine lines / Wrinkles')) {
-                            explanation += 'Retinol increases cell turnover and collagen, but can be drying - so used only 2-3x/week with rich moisturizer after.';
-                        } else {
-                            explanation += 'Overnight mask or oil provides deep nourishment while you sleep and skin cells repair.';
-                        }
-                    } else if (skinType === 'Combination') {
-                        explanation += 'Morning: Balancing cleanser doesn\'t strip dry areas or leave oily residue. Targeted treatments for each zone.\n\nEvening: Gentle exfoliation maintains balance. Rich night cream but lightweight enough for T-zone.';
-                    } else if (skinType === 'Normal') {
-                        explanation += 'Morning: Gentle cleanser, antioxidant protection, balanced hydration, and SPF maintain your healthy skin.\n\nEvening: Preventative exfoliation keeps skin glowing and prevents future issues like dullness.';
-                    } else if (skinType === 'Sensitive') {
-                        explanation += 'Morning: Ultra-gentle cleanser, fragrance-free serum, soothing moisturizer create a protective barrier.\n\nEvening: Minimal steps to reduce irritation risk. Introduce actives very slowly if needed.';
-                    }
-                    
-                    addBotMessage(explanation);
-                }, 3000);
-
-                // Explain the ingredients
-                setTimeout(() => {
-                    let ingredientExpl = 'Why These Ingredients:\n\n';
-                    
-                    ingredientExpl += 'Cleanser: ';
-                    if (skinType === 'Oily') {
-                        ingredientExpl += 'Foaming removes excess oil without stripping. Gel formulas dry faster.\n\n';
-                    } else if (skinType === 'Dry') {
-                        ingredientExpl += 'Cream base removes makeup without damaging the barrier. Preserves natural oils.\n\n';
-                    } else {
-                        ingredientExpl += 'Balancing formula works for all zones without over-treating.\n\n';
-                    }
-                    
-                    ingredientExpl += 'Moisturizer: ';
-                    if (skinType === 'Oily') {
-                        ingredientExpl += 'Gel texture hydrates without occlusion. Won\'t clog pores or feel heavy.\n\n';
-                    } else if (skinType === 'Dry') {
-                        ingredientExpl += 'Ceramides repair barrier. Peptides support structure. Rich cream prevents TEWL (transepidermal water loss).\n\n';
-                    } else {
-                        ingredientExpl += 'Balanced formula hydrates without heaviness.\n\n';
-                    }
-                    
-                    if (concerns.includes('Acne / Breakouts')) {
-                        ingredientExpl += 'Salicylic Acid (BHA): Lipid-soluble, penetrates deep into sebaceous pores. Dissolves the plug blocking the pore, allowing bacteria to escape. Prevents new breakouts.\n\n';
-                    }
-                    if (concerns.includes('Dullness / Uneven tone')) {
-                        ingredientExpl += 'Vitamin C: Stabilizes collagen, brightens skin by inhibiting melanin. Antioxidant protects from environmental damage.\n\n';
-                    }
-                    if (concerns.includes('Fine lines / Wrinkles')) {
-                        ingredientExpl += 'Retinol: Gold standard for wrinkles. Increases cell turnover by 20-40%, boosts collagen production. Smooths fine lines over time.\n\n';
-                    }
-                    if (concerns.includes('Hyperpigmentation / Dark spots')) {
-                        ingredientExpl += 'Vitamin C + Niacinamide: C inhibits melanin production, Niacinamide reduces melanin transfer to skin surface. Together they fade existing spots and prevent new ones.\n\n';
-                    }
-                    
-                    ingredientExpl += 'SPF 50+: Blocks 98% of UVA/UVB rays. Essential because UV damage causes 80% of visible aging. Without SPF, all other actives are undermined.';
-                    
-                    addBotMessage(ingredientExpl);
-                }, 3600);
-
-                // Budget recommendations
-                setTimeout(() => {
-                    let budgetMsg = 'Product Recommendations by Budget:\n\n';
+                    let budgetMsg = '💰 Product Recommendations:\n\n';
                     if (budget.includes('affordable')) {
-                        budgetMsg += 'Affordable (<$20):\n• Cleanser: CeraVe, Cetaphil\n• Moisturizer: CeraVe, Vanicream\n• Serum: The Ordinary (Vitamin C, Niacinamide)\n• Sunscreen: Neutrogena, Cetaphil\n• Exfoliant: COSRX, The Ordinary';
+                        budgetMsg += 'Affordable (<$20):\n• Cleanser: CeraVe, Cetaphil\n• Moisturizer: CeraVe, Vanicream\n• Serum: The Ordinary\n• Sunscreen: Neutrogena, Cetaphil\n• Exfoliant: COSRX, The Ordinary';
                     } else if (budget.includes('mid-range')) {
-                        budgetMsg += 'Mid-Range ($20-$50):\n• Cleanser: Paula\'s Choice, Dr. Jart+\n• Moisturizer: Krave Beauty, Purito\n• Serum: Paula\'s Choice, Pyunkang Yul\n• Sunscreen: Beauty of Joseon, Canmake\n• Exfoliant: Paula\'s Choice, Purito';
+                        budgetMsg += 'Mid-Range ($20-$50):\n• Cleanser: Paula\'s Choice, Dr. Jart+\n• Moisturizer: Krave Beauty, Purito\n• Serum: Paula\'s Choice\n• Sunscreen: Beauty of Joseon\n• Exfoliant: Paula\'s Choice';
                     } else {
-                        budgetMsg += 'Premium ($50+):\n• Cleanser: SK-II, Estée Lauder\n• Moisturizer: La Mer, SkinCeuticals\n• Serum: SkinCeuticals C E Ferulic, Skinceuticals\n• Sunscreen: La Roche-Posay Anthelios\n• Exfoliant: Dr. Dennis Gross, SkinCeuticals';
+                        budgetMsg += 'Premium ($50+):\n• Cleanser: SK-II, Estée Lauder\n• Moisturizer: La Mer, SkinCeuticals\n• Serum: SkinCeuticals C E Ferulic\n• Sunscreen: La Roche-Posay Anthelios\n• Exfoliant: Dr. Dennis Gross';
                     }
                     addBotMessage(budgetMsg);
-                }, 4200);
+                }, 1600);
 
-                // Final tips
                 setTimeout(() => {
-                    let tipsMsg = 'Key Success Tips:\n\n';
-                    tipsMsg += '• Timeline: Allow 4-8 weeks to see results\n';
-                    tipsMsg += '• Introduce: One new active per week\n';
-                    tipsMsg += '• Patch Test: Test on inner arm first\n';
-                    tipsMsg += '• SPF: Essential every single day\n';
-                    tipsMsg += '• Consistency: This is the most important factor\n\n';
+                    let analysis = '🔬 Why This Routine Works:\n\n';
+                    if (skinType === 'Oily') {
+                        analysis += 'Your skin produces excess sebum, which clogs pores and traps bacteria. This routine addresses that by:\n\n• Oil-Control: Niacinamide reduces sebum production by up to 25%\n• Deep Cleansing: Salicylic Acid penetrates pores to remove buildup\n• Lightweight Texture: Heavy moisturizers worsen oiliness\n• Mattifying Products: Keep shine at bay throughout the day\n\nThis prevents acne, blackheads, and that greasy appearance.';
+                    } else if (skinType === 'Dry') {
+                        analysis += 'Your skin lacks natural oils and lipids, making it vulnerable. This routine rebuilds your barrier by:\n\n• Ceramides: Repair the damaged skin barrier and lock in moisture\n• Hyaluronic Acid: Holds 1000x its weight in water for deep hydration\n• Rich Creams: Provide occlusion to prevent water loss\n• Nourishing Oils: Replenish depleted lipids\n\nThis prevents flaking, irritation, sensitivity, and premature aging.';
+                    } else if (skinType === 'Combination') {
+                        analysis += 'Your skin has different needs in different zones (oily T-zone, dry cheeks). This routine balances both by:\n\n• Balancing Cleansers: Don\'t strip or leave residue\n• Targeted Treatments: Oil-control serum for T-zone, hydrating for cheeks\n• Flexible Moisturizers: Adjust based on season and skin state\n\nThis prevents over-treating one area while neglecting another.';
+                    } else if (skinType === 'Normal') {
+                        analysis += 'Your skin is naturally balanced, so this routine maintains that by:\n\n• Preventative Care: Antioxidants like Vitamin C prevent future damage\n• Maintenance Routine: Simple but consistent approach\n• SPF Protection: Prevent sun damage before it starts\n\nThis maintains your healthy baseline and prevents future concerns.';
+                    } else if (skinType === 'Sensitive') {
+                        analysis += 'Your skin reacts easily to irritants and has a compromised barrier. This routine protects you by:\n\n• Minimal Ingredients: Fragrance, alcohol, and strong actives trigger reactions\n• Barrier Support: Ceramides and Panthenol strengthen protective layer\n• Calming Actives: Centella Asiatica reduces inflammation naturally\n• Patch Testing: Always test before full application\n\nThis prevents reactions, redness, and further damage.';
+                    }
+                    addBotMessage(analysis);
+                }, 2400);
+
+                setTimeout(() => {
+                    let tips = '✨ Key Success Tips:\n\n• Timeline: Allow 4-8 weeks to see results\n• Introduce: One new active per week\n• Patch Test: Test on inner arm first\n• SPF: Essential every single day\n• Consistency: This is the most important factor';
                     
                     if (skinType === 'Sensitive') {
-                        tipsMsg += 'Sensitive Skin Reminder: Start with just cleanser + moisturizer for 2 weeks, then add treatments slowly.';
+                        tips += '\n\n⚠️ Sensitive Skin: Start with just cleanser + moisturizer for 2 weeks, then add treatments slowly.';
                     }
                     if (stress.includes('High')) {
-                        tipsMsg += 'Stress Management: High stress increases cortisol. Add calming ingredients like Centella Asiatica.';
+                        tips += '\n\n😌 Stress: High stress increases cortisol. Add calming ingredients like Centella Asiatica.';
                     }
                     if (sunExposure.includes('Frequently')) {
-                        tipsMsg += 'Sun Protection: Your high sun exposure makes SPF critical. Consider adding antioxidants like Vitamin E.';
+                        tips += '\n\n☀️ Sun Protection: Your high sun exposure makes SPF critical. Consider adding antioxidants.';
                     }
                     
-                    addBotMessage(tipsMsg);
-                }, 4800);
-
-                // Disclaimer
-                setTimeout(() => {
-                    addBotMessage('Disclaimer:\n\nMy recommendations are educational and based on dermatological research. They are not medical advice. For persistent skin conditions, consult a dermatologist.\n\n---\n\nCreated by Andy Park');
-                }, 5400);
-            }, 1200);
+                    tips += '\n\n---\n\nDisclaimer: My recommendations are educational and based on dermatological research. They are not medical advice. For persistent skin conditions, consult a dermatologist.\n\nCreated by Andy Park';
+                    addBotMessage(tips);
+                }, 4000);
+            }, 1000);
         }
 
         function addBotMessage(text) {
@@ -811,7 +650,7 @@
 
         function sendMessage() {
             const input = document.getElementById('messageInput');
-            const message = input.value.trim().toLowerCase();
+            const message = input.value.trim();
             if (!message) return;
 
             addUserMessage(input.value);
@@ -821,12 +660,15 @@
 
             setTimeout(() => {
                 const lastBubble = document.querySelectorAll('.message.ai:last-child .message-bubble')[0];
-                let response = getResponse(message);
+                let response = getResponse(message.toLowerCase());
                 lastBubble.innerHTML = response;
             }, 1000);
         }
 
         function getResponse(message) {
+            if (message.includes('love you')) {
+                return 'I love you too! 💕💕💕';
+            }
             if (message.includes('hi') || message.includes('hello')) {
                 return 'Hello! 👋 I\'m your skincare companion. How\'s your skin feeling today?';
             }
@@ -838,6 +680,9 @@
             }
             if (message.includes('thank')) {
                 return 'You\'re welcome! 💕 Let me know if you have any other questions!';
+            }
+            if (message.includes('help')) {
+                return 'I can help with:\n\n• Skin type analysis\n• Product recommendations\n• Ingredient explanations\n• Routine building\n• Skincare concerns\n\nWhat would you like to know?';
             }
             return 'That\'s a great question! 💙\n\nI can help with skin type, routines, products, ingredients, and skincare concerns.\n\nWhat would you like to know?';
         }
