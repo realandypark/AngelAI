@@ -13,12 +13,10 @@
         }
 
         :root {
-            --tiffany: #0fb5d9;
-            --tiffany-light: #e0f7fd;
-            --tiffany-dark: #0a94b0;
+            --red: #FD5C63;
+            --red-light: #FFE8E9;
+            --red-dark: #E84A51;
             --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
             --gray-400: #9ca3af;
             --gray-600: #4b5563;
             --gray-900: #111827;
@@ -41,7 +39,7 @@
         header {
             text-align: center;
             padding: 16px;
-            border-bottom: 1px solid rgba(15, 181, 217, 0.1);
+            border-bottom: 1px solid rgba(253, 92, 99, 0.1);
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
         }
@@ -49,7 +47,7 @@
         .logo {
             font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--tiffany) 0%, var(--tiffany-dark) 100%);
+            background: linear-gradient(135deg, #FD5C63 0%, #E84A51 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -74,9 +72,9 @@
             width: 280px;
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(15, 181, 217, 0.1);
+            border: 1px solid rgba(253, 92, 99, 0.1);
             border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(15, 181, 217, 0.08);
+            box-shadow: 0 8px 32px rgba(253, 92, 99, 0.08);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -84,10 +82,9 @@
 
         .sidebar-header {
             padding: 14px;
-            border-bottom: 1px solid rgba(15, 181, 217, 0.1);
+            border-bottom: 1px solid rgba(253, 92, 99, 0.1);
             font-weight: 600;
             font-size: 13px;
-            color: var(--gray-900);
         }
 
         .faq-list {
@@ -99,61 +96,44 @@
             gap: 6px;
         }
 
-        .faq-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .faq-list::-webkit-scrollbar-thumb {
-            background: rgba(15, 181, 217, 0.2);
-            border-radius: 2px;
-        }
-
         .faq-item {
             padding: 8px 10px;
-            background: rgba(15, 181, 217, 0.05);
-            border: 1px solid rgba(15, 181, 217, 0.1);
+            background: rgba(253, 92, 99, 0.05);
+            border: 1px solid rgba(253, 92, 99, 0.1);
             border-radius: 10px;
             cursor: pointer;
             font-size: 11px;
             color: var(--gray-600);
             transition: all 0.2s ease;
             line-height: 1.3;
-            text-align: left;
         }
 
         .faq-item:hover {
-            background: rgba(15, 181, 217, 0.1);
-            border-color: rgba(15, 181, 217, 0.2);
-            color: var(--tiffany);
+            background: rgba(253, 92, 99, 0.1);
+            color: #FD5C63;
         }
 
         .faq-item.active {
-            background: rgba(15, 181, 217, 0.15);
-            border-color: var(--tiffany);
-            color: var(--tiffany);
-            font-weight: 500;
+            background: rgba(253, 92, 99, 0.15);
+            border-color: #FD5C63;
+            color: #FD5C63;
         }
 
         .sidebar-footer {
             padding: 10px;
-            border-top: 1px solid rgba(15, 181, 217, 0.1);
+            border-top: 1px solid rgba(253, 92, 99, 0.1);
         }
 
         .new-chat-btn {
             width: 100%;
             padding: 8px;
-            background: linear-gradient(135deg, var(--tiffany) 0%, var(--tiffany-dark) 100%);
+            background: linear-gradient(135deg, #FD5C63 0%, #E84A51 100%);
             border: none;
             border-radius: 10px;
             color: white;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .new-chat-btn:active {
-            transform: scale(0.98);
         }
 
         .chat-container {
@@ -162,9 +142,9 @@
             flex-direction: column;
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(15, 181, 217, 0.1);
+            border: 1px solid rgba(253, 92, 99, 0.1);
             border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(15, 181, 217, 0.08);
+            box-shadow: 0 8px 32px rgba(253, 92, 99, 0.08);
             overflow: hidden;
         }
 
@@ -177,20 +157,10 @@
             gap: 10px;
         }
 
-        .chat-messages::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: rgba(15, 181, 217, 0.2);
-            border-radius: 2px;
-        }
-
         .message {
             display: flex;
             gap: 8px;
             animation: slideIn 0.3s ease;
-            max-width: 100%;
         }
 
         @keyframes slideIn {
@@ -208,10 +178,6 @@
             justify-content: flex-end;
         }
 
-        .message.ai {
-            justify-content: flex-start;
-        }
-
         .message-bubble {
             max-width: 80%;
             padding: 10px 12px;
@@ -224,14 +190,14 @@
         }
 
         .message.ai .message-bubble {
-            background: rgba(15, 181, 217, 0.08);
-            border: 1px solid rgba(15, 181, 217, 0.15);
+            background: rgba(253, 92, 99, 0.08);
+            border: 1px solid rgba(253, 92, 99, 0.15);
             color: var(--gray-900);
         }
 
         .message.user .message-bubble {
-            background: linear-gradient(135deg, rgba(15, 181, 217, 0.15) 0%, rgba(15, 181, 217, 0.08) 100%);
-            border: 1px solid rgba(15, 181, 217, 0.2);
+            background: linear-gradient(135deg, rgba(253, 92, 99, 0.15) 0%, rgba(253, 92, 99, 0.08) 100%);
+            border: 1px solid rgba(253, 92, 99, 0.2);
             color: var(--gray-900);
         }
 
@@ -245,7 +211,7 @@
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: var(--tiffany);
+            background: #FD5C63;
             animation: typing 1.4s infinite;
         }
 
@@ -271,8 +237,8 @@
 
         .option-btn {
             padding: 8px 10px;
-            background: rgba(15, 181, 217, 0.1);
-            border: 1.5px solid rgba(15, 181, 217, 0.2);
+            background: rgba(253, 92, 99, 0.1);
+            border: 1.5px solid rgba(253, 92, 99, 0.2);
             border-radius: 10px;
             cursor: pointer;
             font-size: 12px;
@@ -282,21 +248,21 @@
         }
 
         .option-btn:active {
-            background: rgba(15, 181, 217, 0.2);
-            border-color: var(--tiffany);
-            color: var(--tiffany);
+            background: rgba(253, 92, 99, 0.2);
+            border-color: #FD5C63;
+            color: #FD5C63;
         }
 
         .option-btn.selected {
-            background: rgba(15, 181, 217, 0.2);
-            border-color: var(--tiffany);
-            color: var(--tiffany);
+            background: rgba(253, 92, 99, 0.2);
+            border-color: #FD5C63;
+            color: #FD5C63;
             font-weight: 600;
         }
 
         .proceed-btn {
             padding: 8px 10px;
-            background: linear-gradient(135deg, var(--tiffany) 0%, var(--tiffany-dark) 100%);
+            background: linear-gradient(135deg, #FD5C63 0%, #E84A51 100%);
             border: none;
             border-radius: 10px;
             color: white;
@@ -304,7 +270,6 @@
             font-weight: 600;
             cursor: pointer;
             margin-top: 8px;
-            transition: all 0.2s ease;
             width: 100%;
         }
 
@@ -313,13 +278,9 @@
             cursor: not-allowed;
         }
 
-        .proceed-btn:active:not(:disabled) {
-            transform: scale(0.98);
-        }
-
         .input-area {
             padding: 12px;
-            border-top: 1px solid rgba(15, 181, 217, 0.1);
+            border-top: 1px solid rgba(253, 92, 99, 0.1);
             display: flex;
             gap: 8px;
         }
@@ -331,29 +292,24 @@
         input[type="text"] {
             width: 100%;
             padding: 8px 10px;
-            background: rgba(15, 181, 217, 0.05);
-            border: 1px solid rgba(15, 181, 217, 0.15);
+            background: rgba(253, 92, 99, 0.05);
+            border: 1px solid rgba(253, 92, 99, 0.15);
             border-radius: 10px;
             font-size: 13px;
             font-family: inherit;
             color: var(--gray-900);
-            transition: all 0.2s ease;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border-color: rgba(15, 181, 217, 0.3);
-            background: rgba(15, 181, 217, 0.08);
-        }
-
-        input[type="text"]::placeholder {
-            color: var(--gray-400);
+            border-color: rgba(253, 92, 99, 0.3);
+            background: rgba(253, 92, 99, 0.08);
         }
 
         .send-btn {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, var(--tiffany) 0%, var(--tiffany-dark) 100%);
+            background: linear-gradient(135deg, #FD5C63 0%, #E84A51 100%);
             border: none;
             border-radius: 10px;
             color: white;
@@ -362,52 +318,9 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            transition: all 0.2s ease;
-        }
-
-        .send-btn:active {
-            transform: scale(0.95);
-        }
-
-        @media (max-width: 768px) {
-            .main-wrapper {
-                gap: 8px;
-                padding: 8px;
-            }
-
-            .sidebar {
-                width: 240px;
-            }
-
-            .chat-messages {
-                padding: 12px;
-                gap: 8px;
-            }
-
-            .message-bubble {
-                max-width: 85%;
-                font-size: 12px;
-                padding: 8px 10px;
-            }
-
-            .options {
-                grid-template-columns: 1fr;
-            }
         }
 
         @media (max-width: 600px) {
-            header {
-                padding: 12px;
-            }
-
-            .logo {
-                font-size: 20px;
-            }
-
-            .tagline {
-                font-size: 10px;
-            }
-
             .main-wrapper {
                 flex-direction: column;
                 gap: 6px;
@@ -416,7 +329,6 @@
 
             .sidebar {
                 width: 100%;
-                height: auto;
                 max-height: 120px;
             }
 
@@ -424,111 +336,21 @@
                 flex-direction: row;
                 overflow-x: auto;
                 overflow-y: hidden;
-                padding: 6px;
             }
 
             .faq-item {
                 white-space: nowrap;
                 flex-shrink: 0;
                 font-size: 10px;
-                padding: 6px 8px;
-            }
-
-            .chat-container {
-                flex: 1;
-                border-radius: 16px;
-            }
-
-            .chat-messages {
-                padding: 8px;
-                gap: 6px;
             }
 
             .message-bubble {
                 max-width: 90%;
                 font-size: 12px;
-                padding: 8px 10px;
             }
 
-            .input-area {
-                padding: 8px;
-                gap: 6px;
-            }
-
-            .input-wrapper {
-                min-width: 0;
-            }
-
-            input[type="text"] {
-                padding: 8px 10px;
-                font-size: 12px;
-            }
-
-            .send-btn {
-                width: 32px;
-                height: 32px;
-                font-size: 14px;
-            }
-
-            .option-btn {
-                font-size: 11px;
-                padding: 6px 8px;
-            }
-
-            .proceed-btn {
-                font-size: 11px;
-                padding: 6px 8px;
-            }
-
-            .sidebar-header {
-                font-size: 12px;
-                padding: 10px;
-            }
-
-            .new-chat-btn {
-                font-size: 11px;
-                padding: 6px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .logo {
-                font-size: 18px;
-            }
-
-            .tagline {
-                font-size: 9px;
-            }
-
-            .message-bubble {
-                max-width: 95%;
-                font-size: 11px;
-            }
-
-            .faq-item {
-                font-size: 9px;
-                padding: 5px 6px;
-            }
-
-            .option-btn {
-                font-size: 10px;
-                padding: 5px 6px;
-            }
-
-            .proceed-btn {
-                font-size: 10px;
-                padding: 5px 6px;
-            }
-
-            input[type="text"] {
-                padding: 6px 8px;
-                font-size: 11px;
-            }
-
-            .send-btn {
-                width: 30px;
-                height: 30px;
-                font-size: 13px;
+            .options {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -553,12 +375,7 @@
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="input-area">
                     <div class="input-wrapper">
-                        <input 
-                            type="text" 
-                            id="messageInput" 
-                            placeholder="Ask..."
-                            autocomplete="off"
-                        >
+                        <input type="text" id="messageInput" placeholder="Ask..." autocomplete="off">
                     </div>
                     <button class="send-btn" onclick="sendMessage()">→</button>
                 </div>
@@ -568,40 +385,43 @@
 
     <script>
         const questions = [
+            { key: 'sex', text: 'What is your biological sex?', options: ['Female', 'Male', 'Non-binary / Prefer not to say'] },
             { key: 'age', text: 'What is your age group?', options: ['Under 18', '18-24', '25-34', '35-44', '45-54', '55+'] },
             { key: 'skinType', text: 'How would you describe your skin type?', options: ['Oily', 'Dry', 'Combination', 'Normal', 'Sensitive'] },
-            { key: 'afterWash', text: 'How does your skin feel after washing?', options: ['Tight and dry', 'Comfortable', 'Slightly oily', 'Very oily'] },
-            { key: 'concerns', text: 'Select your primary concerns (up to 3)', options: ['Acne', 'Blackheads', 'Redness', 'Dark spots', 'Uneven texture', 'Fine lines', 'Dullness', 'Dehydration', 'Large pores'], multiSelect: true, maxSelect: 3 },
-            { key: 'sunExposure', text: 'How often are you exposed to the sun?', options: ['Rarely', 'Few times a week', 'Daily', 'Prolonged'] },
-            { key: 'sunscreen', text: 'Do you use sunscreen regularly?', options: ['Yes, daily', 'Sometimes', 'Rarely'] },
-            { key: 'climate', text: 'What is your climate type?', options: ['Humid', 'Balanced', 'Dry'] },
-            { key: 'sensitivity', text: 'How sensitive is your skin?', options: ['Very sensitive', 'Somewhat', 'Not sensitive'] },
-            { key: 'budget', text: 'Budget per product?', options: ['Under $15', '$15-$30', '$30-$60', '$60+'] }
+            { key: 'concerns', text: 'What are your main skin concerns? (Select up to 3)', options: ['Acne / Breakouts', 'Blackheads / Large pores', 'Dullness / Uneven tone', 'Redness / Sensitivity', 'Fine lines / Wrinkles', 'Hyperpigmentation / Dark spots', 'Dryness / Dehydration', 'Oil control'], multiSelect: true },
+            { key: 'afterWash', text: 'How does your skin feel after cleansing?', options: ['Tight / Dry', 'Comfortable', 'Greasy quickly'] },
+            { key: 'sunExposure', text: 'How often are you exposed to the sun?', options: ['Rarely (mostly indoors)', 'Occasionally (a few hours/week)', 'Frequently (daily outdoor exposure)'] },
+            { key: 'climate', text: 'What is your climate type? (Where do you live)', options: ['Dry/Cold', 'Humid/Tropical', 'Moderate/Temperate'] },
+            { key: 'stress', text: 'How much stress or sleep deprivation do you experience?', options: ['High stress, poor sleep', 'Moderate stress', 'Low stress, good sleep'] },
+            { key: 'currentProducts', text: 'Which of these do you already use?', options: ['Cleanser', 'Toner', 'Serum', 'Moisturizer', 'Sunscreen', 'Exfoliant (AHA/BHA)', 'Retinol / Retinoid', 'None'], multiSelect: true },
+            { key: 'routineSteps', text: 'How many steps do you prefer in your routine?', options: ['Minimal (2-3 steps)', 'Moderate (4-5 steps)', 'Full routine (6+ steps)'] },
+            { key: 'budget', text: 'What is your typical budget per product?', options: ['Under $20 (affordable)', '$20-$50 (mid-range)', '$50+ (premium)'] },
+            { key: 'fragrance', text: 'Do you prefer fragrance-free or natural-scented products?', options: ['Fragrance-free', 'Lightly scented', 'No preference'] }
         ];
 
         const faqs = [
-            { q: 'How does AngelAI work?', a: 'I\'m AngelAI, and I\'m so happy to explain!\n\nI work by asking you thoughtful questions about your skin. Based on your answers, I create a personalized skincare routine for you.\n\nMy recommendations are based on dermatological research. Think of me as your skincare friend!' },
-            { q: 'Is this medical advice?', a: 'I want to be honest and transparent!\n\nNo, my recommendations are educational skincare guidance, not medical advice.\n\nIf you have persistent skin conditions, please consult a dermatologist. Your health is everything to me.' },
-            { q: 'How accurate are the recommendations?', a: 'Great question!\n\nMy recommendations are based on dermatological research. Every person\'s skin is unique.\n\nGive your routine 4-6 weeks and patch test first. Your skin will tell you what it loves!' },
-            { q: 'Can I use all ingredients together?', a: 'I love your enthusiasm!\n\nSome ingredients work beautifully together. Others need to be used at different times.\n\nI\'ll guide you on how to layer everything safely. You\'ve got this!' },
-            { q: 'I have sensitive skin!', a: 'Your sensitive skin deserves extra love!\n\nI prioritize gentle ingredients like Centella Asiatica and Panthenol.\n\nIntroduce products slowly and always patch test. Your comfort is my priority.' },
-            { q: 'When will I see results?', a: 'Patience is beautiful!\n\nMost people see improvements within 4-8 weeks with consistent use.\n\nYou\'re investing in your skin\'s long-term health. I\'m cheering you on!' },
-            { q: 'Do I need all steps?', a: 'Absolutely not!\n\nStart with essentials: cleanser, moisturizer, sunscreen.\n\nAdd treatments gradually. There\'s no pressure to do everything at once.' },
-            { q: 'Sunscreen every day?', a: 'Yes, please!\n\nDaily sunscreen prevents aging and damage. UV rays penetrate windows.\n\nSPF 50+ is amazing. Your future skin will thank you! 💙' }
+            { q: 'How does AngelAI work?', a: 'I\'m AngelAI, and I\'m so happy to explain!\n\nI ask you 12 thoughtful questions about your skin, lifestyle, and preferences.\n\nBased on your answers, I create a personalized skincare routine with specific ingredients and steps designed just for you. My recommendations are grounded in dermatological research!' },
+            { q: 'Is this medical advice?', a: 'I want to be honest and transparent!\n\nNo, my recommendations are educational skincare guidance based on dermatological research, not medical advice.\n\nIf you have persistent skin conditions, consult a dermatologist. Your health and safety are everything to me.' },
+            { q: 'When will I see results?', a: 'Patience is beautiful, and consistency is key!\n\nMost people see visible improvements within 4-8 weeks of following their personalized routine regularly.\n\nDifferent concerns show results at different speeds. You\'re investing in your skin\'s long-term health!' },
+            { q: 'I have sensitive skin!', a: 'Your sensitive skin deserves extra love and care!\n\nI prioritize gentle, soothing ingredients like Centella Asiatica, Panthenol, and Ceramides.\n\nIntroduce products one at a time, always patch test, and listen to your skin. Your comfort is my priority.' },
+            { q: 'Why is sunscreen important?', a: 'This is my biggest love letter to your skin!\n\nDaily sunscreen prevents premature aging, dark spots, and sun damage that accumulates over time.\n\nUV rays penetrate windows, so use it even indoors. SPF 50+ is amazing. Your future skin will thank you! ❤️' },
+            { q: 'Can I combine ingredients?', a: 'I love your enthusiasm!\n\nSome ingredients work beautifully together. Others need to be used at different times to prevent irritation.\n\nFor example, strong acids and retinoids should be used on separate nights. I\'ll guide you safely!' },
+            { q: 'Do I need all steps?', a: 'Absolutely not!\n\nStart with essentials: a gentle cleanser, a nourishing moisturizer, and sunscreen.\n\nOnce comfortable, add treatments gradually. There\'s no pressure to do everything at once!' },
+            { q: 'Climate type explanation?', a: 'Great question!\n\nDry/Cold: Winter climates or deserts - skin needs more hydration and heavier moisturizers.\n\nHumid/Tropical: Summer or rainforest climates - skin gets oily, need lighter products.\n\nModerate: Mild weather year-round - balanced routine works best.' }
         ];
 
         let currentQuestion = 0;
         let userResponses = {};
-        let selectedConcerns = [];
+        let multiSelectData = {};
 
         function initChat() {
             currentQuestion = 0;
             userResponses = {};
-            selectedConcerns = [];
+            multiSelectData = {};
             document.getElementById('chatMessages').innerHTML = '';
             document.getElementById('messageInput').value = '';
             
-            addBotMessage('Hi there! I\'m AngelAI, your personal skincare companion. 💙\n\nI\'m here to help you discover the perfect skincare routine tailored just for you.\n\nLet\'s get started!');
+            addBotMessage('Hi there! I\'m AngelAI, your personal skincare companion. ❤️\n\nI\'m here to help you discover the perfect skincare routine tailored just for you.\n\nLet\'s get started!');
             setTimeout(() => showQuestion(), 1200);
             renderFAQ();
         }
@@ -615,116 +435,282 @@
             const q = questions[currentQuestion];
             addBotMessage(q.text);
             
-            let optionsHtml = '<div class="options">';
-            q.options.forEach(opt => {
-                optionsHtml += `<button class="option-btn" onclick="selectAnswer('${opt}', this)">${opt}</button>`;
+            const questionId = 'q' + currentQuestion;
+            let optionsHtml = '<div class="options" data-question="' + questionId + '">';
+            
+            q.options.forEach((opt, idx) => {
+                optionsHtml += '<button class="option-btn" data-option="' + opt + '" onclick="handleOption(' + currentQuestion + ', ' + idx + ', this)">' + opt + '</button>';
             });
             optionsHtml += '</div>';
 
             if (q.multiSelect) {
-                optionsHtml += '<button class="proceed-btn" id="proceedBtn" onclick="completeMultiSelect()" disabled>Select to continue</button>';
+                optionsHtml += '<button class="proceed-btn" data-question="' + questionId + '" onclick="handleProceed(' + currentQuestion + ')" disabled>Select to continue</button>';
             }
 
             const lastMessage = document.querySelector('.message:last-child');
             lastMessage.querySelector('.message-bubble').innerHTML += optionsHtml;
         }
 
-        function selectAnswer(answer, element) {
-            const q = questions[currentQuestion];
+        function handleOption(qIdx, optIdx, btn) {
+            const q = questions[qIdx];
+            const option = q.options[optIdx];
             
             if (q.multiSelect) {
-                if (element.classList.contains('selected')) {
-                    element.classList.remove('selected');
-                    selectedConcerns = selectedConcerns.filter(c => c !== answer);
-                } else if (selectedConcerns.length < q.maxSelect) {
-                    element.classList.add('selected');
-                    selectedConcerns.push(answer);
-                } else {
-                    return;
-                }
-                updateProceedBtn();
+                btn.classList.toggle('selected');
+                updateProceedButton(qIdx);
             } else {
-                userResponses[q.key] = answer;
-                element.classList.add('selected');
-                addUserMessage(answer);
+                userResponses[q.key] = option;
+                btn.classList.add('selected');
+                addUserMessage(option);
                 currentQuestion++;
                 setTimeout(() => showQuestion(), 600);
             }
         }
 
-        function updateProceedBtn() {
-            const btn = document.getElementById('proceedBtn');
-            if (btn) {
-                if (selectedConcerns.length > 0) {
-                    btn.disabled = false;
-                    btn.textContent = `Continue (${selectedConcerns.length}/${3})`;
+        function updateProceedButton(qIdx) {
+            const questionId = 'q' + qIdx;
+            const proceedBtn = document.querySelector('[data-question="' + questionId + '"].proceed-btn');
+            const optionsDiv = document.querySelector('[data-question="' + questionId + '"].options');
+            
+            if (proceedBtn && optionsDiv) {
+                const selected = optionsDiv.querySelectorAll('.option-btn.selected').length;
+                if (selected > 0) {
+                    proceedBtn.disabled = false;
+                    proceedBtn.textContent = 'Continue (' + selected + ' selected)';
                 } else {
-                    btn.disabled = true;
-                    btn.textContent = 'Select to continue';
+                    proceedBtn.disabled = true;
+                    proceedBtn.textContent = 'Select to continue';
                 }
             }
         }
 
-        function completeMultiSelect() {
-            const q = questions[currentQuestion];
-            userResponses[q.key] = selectedConcerns;
-            addUserMessage(selectedConcerns.join(', '));
-            selectedConcerns = [];
-            currentQuestion++;
-            setTimeout(() => showQuestion(), 600);
+        function handleProceed(qIdx) {
+            const q = questions[qIdx];
+            const questionId = 'q' + qIdx;
+            const optionsDiv = document.querySelector('[data-question="' + questionId + '"].options');
+            
+            if (optionsDiv) {
+                const selectedBtns = optionsDiv.querySelectorAll('.option-btn.selected');
+                const selectedOptions = [];
+                selectedBtns.forEach(btn => {
+                    selectedOptions.push(btn.getAttribute('data-option'));
+                });
+                
+                if (selectedOptions.length > 0) {
+                    userResponses[q.key] = selectedOptions;
+                    addUserMessage(selectedOptions.join(', '));
+                    currentQuestion++;
+                    setTimeout(() => showQuestion(), 600);
+                }
+            }
         }
 
         function generateRecommendation() {
             addBotMessage('Analyzing your profile...');
             
             setTimeout(() => {
+                const sex = userResponses.sex || 'not specified';
+                const age = userResponses.age || 'not specified';
                 const skinType = userResponses.skinType || 'normal';
                 const concerns = userResponses.concerns || [];
-                const sunscreen = userResponses.sunscreen || 'sometimes';
-                const sensitivity = userResponses.sensitivity || 'somewhat';
-                
-                addBotMessage(`I've created something special just for you!\n\nFor your ${skinType} skin, here's your personalized routine:`);
+                const afterWash = userResponses.afterWash || 'comfortable';
+                const sunExposure = userResponses.sunExposure || 'occasionally';
+                const climate = userResponses.climate || 'moderate';
+                const stress = userResponses.stress || 'moderate stress';
+                const currentProducts = userResponses.currentProducts || [];
+                const routineSteps = userResponses.routineSteps || 'moderate';
+                const budget = userResponses.budget || 'mid-range';
+                const fragrance = userResponses.fragrance || 'no preference';
 
+                // Profile Summary
+                addBotMessage('Profile Summary:\n\nSex: ' + sex + '\nAge: ' + age + '\nSkin Type: ' + skinType + '\nConcerns: ' + (concerns.length > 0 ? concerns.join(', ') : 'General maintenance'));
+
+                // Skin Analysis
                 setTimeout(() => {
-                    addBotMessage(`Morning Routine:\n\n1. Gentle cleanser\n2. Vitamin C serum\n3. Lightweight moisturizer\n4. SPF 50+ sunscreen`);
-                }, 500);
+                    let analysis = 'Why This Routine:\n\n';
+                    if (skinType === 'Oily') {
+                        analysis += 'Your skin produces excess sebum, which clogs pores and traps bacteria. You need:\n\n• Oil-Control: Niacinamide reduces sebum production by up to 25%\n• Deep Cleansing: Salicylic Acid penetrates pores to remove buildup\n• Lightweight Texture: Heavy moisturizers worsen oiliness\n• Mattifying Products: Keep shine at bay throughout the day\n\nThis prevents acne, blackheads, and that greasy appearance.';
+                    } else if (skinType === 'Dry') {
+                        analysis += 'Your skin lacks natural oils and lipids, making it vulnerable. You need:\n\n• Ceramides: Repair the damaged skin barrier and lock in moisture\n• Hyaluronic Acid: Holds 1000x its weight in water for deep hydration\n• Rich Creams: Provide occlusion to prevent water loss\n• Nourishing Oils: Replenish depleted lipids\n\nThis prevents flaking, irritation, sensitivity, and premature aging.';
+                    } else if (skinType === 'Combination') {
+                        analysis += 'Your skin has different needs in different zones (oily T-zone, dry cheeks). You need:\n\n• Balancing Cleansers: Don\'t strip or leave residue\n• Targeted Treatments: Oil-control serum for T-zone, hydrating for cheeks\n• Flexible Moisturizers: Adjust based on season and skin state\n\nThis prevents over-treating one area while neglecting another.';
+                    } else if (skinType === 'Normal') {
+                        analysis += 'Your skin is naturally balanced, so you need:\n\n• Preventative Care: Antioxidants like Vitamin C prevent future damage\n• Maintenance Routine: Simple but consistent approach\n• SPF Protection: Prevent sun damage before it starts\n\nThis maintains your healthy baseline and prevents future concerns.';
+                    } else if (skinType === 'Sensitive') {
+                        analysis += 'Your skin reacts easily to irritants and has a compromised barrier. You need:\n\n• Minimal Ingredients: Fragrance, alcohol, and strong actives trigger reactions\n• Barrier Support: Ceramides and Panthenol strengthen protective layer\n• Calming Actives: Centella Asiatica reduces inflammation naturally\n• Patch Testing: Always test before full application\n\nThis prevents reactions, redness, and further damage.';
+                    }
+                    addBotMessage(analysis);
+                }, 600);
 
-                setTimeout(() => {
-                    addBotMessage(`Evening Routine:\n\n1. Gentle cleanser\n2. Targeted treatment serum\n3. Nourishing night moisturizer`);
-                }, 1000);
-
+                // Concerns-specific treatment
                 if (concerns.length > 0) {
                     setTimeout(() => {
-                        addBotMessage(`Your Concerns:\n\nI'm focusing on: ${concerns.join(', ')}\n\nBe patient and consistent—you should see improvements within 4-6 weeks!`);
-                    }, 1500);
+                        let treatmentMsg = 'Why These Ingredients for Your Concerns:\n\n';
+                        concerns.forEach(concern => {
+                            if (concern.includes('Acne')) {
+                                treatmentMsg += 'Acne: Caused by bacteria, clogged pores, and inflammation. Salicylic Acid unclogs pores, Benzoyl Peroxide kills bacteria, Retinoids promote cell turnover. Start low (0.5-1%) to build tolerance.\n\n';
+                            }
+                            if (concern.includes('Blackheads')) {
+                                treatmentMsg += 'Blackheads: Oxidized sebum trapped in pores. BHA dissolves sebum from inside, clay masks absorb surface oil, retinoids prevent pore buildup.\n\n';
+                            }
+                            if (concern.includes('Dullness')) {
+                                treatmentMsg += 'Dullness: Dead skin cells accumulate and scatter light. Vitamin C brightens, AHA/BHA exfoliate dead skin, revealing luminous skin beneath.\n\n';
+                            }
+                            if (concern.includes('Redness')) {
+                                treatmentMsg += 'Redness: Result of inflammation or damaged barrier. Niacinamide calms, Azelaic Acid reduces redness, Centella soothes irritation.\n\n';
+                            }
+                            if (concern.includes('Fine lines')) {
+                                treatmentMsg += 'Fine Lines: Caused by collagen loss and dehydration. Retinol boosts collagen production, Peptides signal repair, Hyaluronic Acid plumps skin.\n\n';
+                            }
+                            if (concern.includes('Hyperpigmentation')) {
+                                treatmentMsg += 'Dark Spots: Result of excess melanin production. Vitamin C inhibits melanin, Niacinamide reduces production, Alpha Arbutin blocks enzyme, SPF prevents recurrence.\n\n';
+                            }
+                            if (concern.includes('Dryness')) {
+                                treatmentMsg += 'Dehydration: Skin can\'t retain moisture. Hyaluronic Acid holds water, Glycerin attracts moisture, Ceramides seal barrier to prevent loss.\n\n';
+                            }
+                            if (concern.includes('Oil control')) {
+                                treatmentMsg += 'Oil Control: Overactive sebaceous glands need regulation. Niacinamide shrinks pores, Zinc absorbs oil, lightweight formulas prevent buildup.\n\n';
+                            }
+                        });
+                        addBotMessage(treatmentMsg);
+                    }, 1200);
                 }
 
-                if (sensitivity === 'very') {
-                    setTimeout(() => {
-                        addBotMessage(`Extra Care for Your Sensitive Skin:\n\nIntroduce products one at a time and always patch test first.\n\nStart with essentials and add gradually. Your comfort is everything. 💙`);
-                    }, 2000);
-                }
-
-                if (sunscreen === 'rarely') {
-                    setTimeout(() => {
-                        addBotMessage(`Quick Note on Sunscreen:\n\nI'd love to encourage daily SPF use. It's the most powerful anti-aging tool!\n\nCan we make this a daily habit together?`);
-                    }, 2500);
-                }
-
+                // Morning Routine
                 setTimeout(() => {
-                    addBotMessage(`My Tips for Success:\n\n• Give your routine 4-8 weeks\n• Introduce new actives one at a time\n• Always patch test first\n• Listen to your skin\n• Be kind to yourself\n\nYou've got this! 💙`);
+                    let morningRoutine = 'Your Morning Routine:\n\n';
+                    morningRoutine += '1. Cleanser: ';
+                    if (skinType === 'Oily') {
+                        morningRoutine += 'Foaming gel cleanser\n';
+                    } else if (skinType === 'Dry') {
+                        morningRoutine += 'Creamy hydrating cleanser\n';
+                    } else {
+                        morningRoutine += 'Gentle balancing cleanser\n';
+                    }
+                    
+                    morningRoutine += '2. Treatment: ';
+                    if (concerns.includes('Dullness / Uneven tone')) {
+                        morningRoutine += 'Vitamin C serum (15-20% L-Ascorbic Acid)\n';
+                    } else if (concerns.includes('Hyperpigmentation / Dark spots')) {
+                        morningRoutine += 'Niacinamide serum or Vitamin C with Ferulic Acid\n';
+                    } else {
+                        morningRoutine += 'Antioxidant serum (Vitamin C or Niacinamide)\n';
+                    }
+                    
+                    morningRoutine += '3. Moisturizer: ';
+                    if (skinType === 'Oily') {
+                        morningRoutine += 'Lightweight gel moisturizer\n';
+                    } else if (skinType === 'Dry') {
+                        morningRoutine += 'Rich cream with Ceramides\n';
+                    } else {
+                        morningRoutine += 'Balanced lotion moisturizer\n';
+                    }
+                    
+                    morningRoutine += '4. SPF: SPF 50+ broad spectrum (reapply every 2 hours if outdoors)';
+                    addBotMessage(morningRoutine);
+                }, 1800);
+
+                // Evening Routine
+                setTimeout(() => {
+                    let eveningRoutine = 'Your Evening Routine:\n\n';
+                    eveningRoutine += '1. Cleanser: Same as morning\n\n';
+                    eveningRoutine += '2. Exfoliant (2-3x/week): ';
+                    
+                    if (concerns.includes('Acne / Breakouts')) {
+                        eveningRoutine += 'Salicylic Acid (BHA) 2% or Benzoyl Peroxide 2.5%\n\n';
+                    } else if (concerns.includes('Fine lines / Wrinkles')) {
+                        eveningRoutine += 'Retinol 0.3-1% (start 2x/week)\n\n';
+                    } else if (concerns.includes('Dullness / Uneven tone')) {
+                        eveningRoutine += 'Glycolic Acid 5-10% or Lactic Acid\n\n';
+                    } else {
+                        eveningRoutine += 'Gentle exfoliant based on concerns\n\n';
+                    }
+                    
+                    eveningRoutine += '3. Serum: Hydrating serum or targeted treatment\n\n';
+                    eveningRoutine += '4. Moisturizer: Rich night cream\n\n';
+                    
+                    if (skinType === 'Dry') {
+                        eveningRoutine += '5. Optional: Overnight mask or facial oil';
+                    }
+                    
+                    addBotMessage(eveningRoutine);
+                }, 2400);
+
+                // Explain the routine
+                setTimeout(() => {
+                    let explanation = 'Why This Routine Works:\n\n';
+                    
+                    if (skinType === 'Oily') {
+                        explanation += 'Morning: Foaming cleanser removes overnight oil buildup. Vitamin C brightens and protects, while lightweight moisturizer hydrates without clogging. SPF is non-negotiable.\n\nEvening: ';
+                        if (concerns.includes('Acne / Breakouts')) {
+                            explanation += 'Salicylic Acid penetrates pores 3-4x weekly to prevent acne bacteria growth and clogging.';
+                        } else {
+                            explanation += 'Gentle exfoliation removes dead cells without stripping, maintaining oil balance.';
+                        }
+                    } else if (skinType === 'Dry') {
+                        explanation += 'Morning: Creamy cleanser preserves natural oils. Antioxidants protect. Rich moisturizer seals hydration barrier.\n\nEvening: ';
+                        if (concerns.includes('Fine lines / Wrinkles')) {
+                            explanation += 'Retinol increases cell turnover and collagen, but can be drying - so used only 2-3x/week with rich moisturizer after.';
+                        } else {
+                            explanation += 'Overnight mask or oil provides deep nourishment while you sleep and skin cells repair.';
+                        }
+                    } else if (skinType === 'Combination') {
+                        explanation += 'Morning: Balancing cleanser doesn\'t strip dry areas or leave oily residue. Targeted treatments for each zone.\n\nEvening: Gentle exfoliation maintains balance. Rich night cream but lightweight enough for T-zone.';
+                    } else if (skinType === 'Normal') {
+                        explanation += 'Morning: Gentle cleanser, antioxidant protection, balanced hydration, and SPF maintain your healthy skin.\n\nEvening: Preventative exfoliation keeps skin glowing and prevents future issues like dullness.';
+                    } else if (skinType === 'Sensitive') {
+                        explanation += 'Morning: Ultra-gentle cleanser, fragrance-free serum, soothing moisturizer create a protective barrier.\n\nEvening: Minimal steps to reduce irritation risk. Introduce actives very slowly if needed.';
+                    }
+                    
+                    addBotMessage(explanation);
                 }, 3000);
 
+                // Budget recommendations
                 setTimeout(() => {
-                    addBotMessage(`Disclaimer:\n\nMy recommendations are educational and based on dermatological research. They are not medical advice. For persistent skin conditions, consult a dermatologist.\n\n---\n\nCreated by Andy Park`);
-                }, 3500);
+                    let budgetMsg = 'Product Recommendations by Budget:\n\n';
+                    if (budget.includes('affordable')) {
+                        budgetMsg += 'Affordable (<$20):\n• Cleanser: CeraVe, Cetaphil\n• Moisturizer: CeraVe, Vanicream\n• Serum: The Ordinary (Vitamin C, Niacinamide)\n• Sunscreen: Neutrogena, Cetaphil\n• Exfoliant: COSRX, The Ordinary';
+                    } else if (budget.includes('mid-range')) {
+                        budgetMsg += 'Mid-Range ($20-$50):\n• Cleanser: Paula\'s Choice, Dr. Jart+\n• Moisturizer: Krave Beauty, Purito\n• Serum: Paula\'s Choice, Pyunkang Yul\n• Sunscreen: Beauty of Joseon, Canmake\n• Exfoliant: Paula\'s Choice, Purito';
+                    } else {
+                        budgetMsg += 'Premium ($50+):\n• Cleanser: SK-II, Estée Lauder\n• Moisturizer: La Mer, SkinCeuticals\n• Serum: SkinCeuticals C E Ferulic, Skinceuticals\n• Sunscreen: La Roche-Posay Anthelios\n• Exfoliant: Dr. Dennis Gross, SkinCeuticals';
+                    }
+                    addBotMessage(budgetMsg);
+                }, 3000);
+
+                // Final tips
+                setTimeout(() => {
+                    let tipsMsg = 'Key Success Tips:\n\n';
+                    tipsMsg += '• Timeline: Allow 4-8 weeks to see results\n';
+                    tipsMsg += '• Introduce: One new active per week\n';
+                    tipsMsg += '• Patch Test: Test on inner arm first\n';
+                    tipsMsg += '• SPF: Essential every single day\n';
+                    tipsMsg += '• Consistency: This is the most important factor\n\n';
+                    
+                    if (skinType === 'Sensitive') {
+                        tipsMsg += 'Sensitive Skin Reminder: Start with just cleanser + moisturizer for 2 weeks, then add treatments slowly.';
+                    }
+                    if (stress.includes('High')) {
+                        tipsMsg += 'Stress Management: High stress increases cortisol. Add calming ingredients like Centella Asiatica.';
+                    }
+                    if (sunExposure.includes('Frequently')) {
+                        tipsMsg += 'Sun Protection: Your high sun exposure makes SPF critical. Consider adding antioxidants like Vitamin E.';
+                    }
+                    
+                    addBotMessage(tipsMsg);
+                }, 3600);
+
+                // Disclaimer
+                setTimeout(() => {
+                    addBotMessage('Disclaimer:\n\nMy recommendations are educational and based on dermatological research. They are not medical advice. For persistent skin conditions, consult a dermatologist.\n\n---\n\nCreated by Andy Park');
+                }, 4200);
             }, 1200);
         }
 
         function addBotMessage(text) {
             const msg = document.createElement('div');
             msg.className = 'message ai';
-            msg.innerHTML = `<div class="message-bubble">${text}</div>`;
+            msg.innerHTML = '<div class="message-bubble">' + text + '</div>';
             document.getElementById('chatMessages').appendChild(msg);
             scrollToBottom();
         }
@@ -732,7 +718,7 @@
         function addUserMessage(text) {
             const msg = document.createElement('div');
             msg.className = 'message user';
-            msg.innerHTML = `<div class="message-bubble">${text}</div>`;
+            msg.innerHTML = '<div class="message-bubble">' + text + '</div>';
             document.getElementById('chatMessages').appendChild(msg);
             scrollToBottom();
         }
@@ -744,31 +730,35 @@
 
         function sendMessage() {
             const input = document.getElementById('messageInput');
-            const message = input.value.trim();
+            const message = input.value.trim().toLowerCase();
             if (!message) return;
 
-            addUserMessage(message);
+            addUserMessage(input.value);
             input.value = '';
 
             addBotMessage('<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>');
 
             setTimeout(() => {
                 const lastBubble = document.querySelectorAll('.message.ai:last-child .message-bubble')[0];
-                
-                const faqMatch = faqs.find(f => 
-                    message.toLowerCase().includes(f.q.split(' ')[0].toLowerCase())
-                );
-                
-                if (faqMatch) {
-                    lastBubble.textContent = faqMatch.a;
-                } else if (message.toLowerCase().includes('recommend') || message.toLowerCase().includes('routine')) {
-                    lastBubble.textContent = 'Tell me about your skin and I\'ll create a personalized routine for you!';
-                } else if (message.toLowerCase().includes('ingredient')) {
-                    lastBubble.textContent = 'Top actives: Vitamin C, Retinol, Niacinamide, Hyaluronic Acid. What interests you?';
-                } else {
-                    lastBubble.textContent = 'Ask about skincare or check the FAQ! What can I help with?';
-                }
+                let response = getResponse(message);
+                lastBubble.innerHTML = response;
             }, 1000);
+        }
+
+        function getResponse(message) {
+            if (message.includes('hi') || message.includes('hello')) {
+                return 'Hello! 👋 I\'m your skincare companion. How\'s your skin feeling today?';
+            }
+            if (message.includes('how are you')) {
+                return 'I\'m glowing as always! ✨ How about you?';
+            }
+            if (message.includes('good morning')) {
+                return 'Good morning! 🌞 Did you apply sunscreen today?';
+            }
+            if (message.includes('thank')) {
+                return 'You\'re welcome! 💕 Let me know if you have any other questions!';
+            }
+            return 'That\'s a great question! 💙\n\nI can help with skin type, routines, products, ingredients, and skincare concerns.\n\nWhat would you like to know?';
         }
 
         function renderFAQ() {
