@@ -34,18 +34,20 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         header {
             text-align: center;
-            padding: 16px;
+            padding: 12px 8px;
             border-bottom: 1px solid rgba(253, 92, 99, 0.1);
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
+            flex-shrink: 0;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             background: linear-gradient(135deg, #FD5C63 0%, #E84A51 100%);
             -webkit-background-clip: text;
@@ -54,9 +56,9 @@
         }
 
         .tagline {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--gray-400);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .main-wrapper {
@@ -323,19 +325,22 @@
         @media (max-width: 600px) {
             .main-wrapper {
                 flex-direction: column;
-                gap: 6px;
-                padding: 6px;
+                gap: 4px;
+                padding: 4px;
+                height: auto;
             }
 
             .sidebar {
                 width: 100%;
-                max-height: 140px;
+                height: auto;
+                max-height: 160px;
+                flex-shrink: 0;
                 order: 2;
             }
 
-            .chat-container {
-                order: 1;
-                flex: 1;
+            .sidebar-header {
+                padding: 10px;
+                font-size: 12px;
             }
 
             .faq-list {
@@ -343,13 +348,34 @@
                 overflow-x: auto;
                 overflow-y: hidden;
                 padding: 6px;
+                max-height: 110px;
+                min-height: 80px;
             }
 
             .faq-item {
                 white-space: nowrap;
                 flex-shrink: 0;
                 font-size: 10px;
-                padding: 6px 8px;
+                padding: 8px 10px;
+                min-height: 40px;
+                display: flex;
+                align-items: center;
+            }
+
+            .sidebar-footer {
+                padding: 6px;
+                flex-shrink: 0;
+            }
+
+            .new-chat-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            .chat-container {
+                order: 1;
+                flex: 1;
+                min-height: 300px;
             }
 
             .message-bubble {
@@ -358,14 +384,14 @@
             }
 
             .options {
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
                 gap: 5px;
             }
 
             .option-btn {
                 padding: 10px 8px;
                 font-size: 11px;
-                min-height: 44px;
+                min-height: 40px;
             }
         }
     </style>
