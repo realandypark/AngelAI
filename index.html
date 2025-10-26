@@ -423,13 +423,14 @@
 
     <script>
         const questions = [
+            { key: 'name', text: 'First, what\'s your name? (So I can call you by name! 💕)', options: [], textInput: true },
             { key: 'sex', text: 'What is your biological sex?', options: ['Female', 'Male', 'Non-binary / Prefer not to say'] },
             { key: 'age', text: 'What is your age group?', options: ['Under 18', '18-24', '25-34', '35-44', '45-54', '55+'] },
             { key: 'skinType', text: 'How would you describe your skin type?', options: ['Oily', 'Dry', 'Combination', 'Normal', 'Sensitive'] },
             { key: 'concerns', text: 'What are your main skin concerns? (Select up to 3)', options: ['Acne / Breakouts', 'Blackheads / Large pores', 'Dullness / Uneven tone', 'Redness / Sensitivity', 'Fine lines / Wrinkles', 'Hyperpigmentation / Dark spots', 'Dryness / Dehydration', 'Oil control'], multiSelect: true },
             { key: 'afterWash', text: 'How does your skin feel after cleansing?', options: ['Tight / Dry', 'Comfortable', 'Greasy quickly'] },
             { key: 'sunExposure', text: 'How often are you exposed to the sun?', options: ['Rarely (mostly indoors)', 'Occasionally (a few hours/week)', 'Frequently (daily outdoor exposure)'] },
-            { key: 'climate', text: 'What is your climate type?', options: ['Dry/Cold', 'Humid/Tropical', 'Moderate/Temperate'] },
+            { key: 'climate', text: 'Where do you live? What\'s the weather usually like?', options: ['Cold & dry (winter weather, air conditioning)', 'Hot & humid (tropical, summer weather)', 'Moderate & balanced (mild year-round)'] },
             { key: 'stress', text: 'How much stress or sleep deprivation do you experience?', options: ['High stress, poor sleep', 'Moderate stress', 'Low stress, good sleep'] },
             { key: 'currentProducts', text: 'Which products do you already use?', options: ['Cleanser', 'Toner', 'Serum', 'Moisturizer', 'Sunscreen', 'Exfoliant (AHA/BHA)', 'Retinol / Retinoid', 'None'], multiSelect: true },
             { key: 'routineSteps', text: 'How many steps do you prefer in your routine?', options: ['Minimal (2-3 steps)', 'Moderate (4-5 steps)', 'Full routine (6+ steps)'] },
@@ -471,6 +472,14 @@
             const q = questions[currentQuestion];
             addBotMessage(q.text);
             
+            // Handle text input questions (like name)
+            if (q.textInput) {
+                const lastMessage = document.querySelector('.message:last-child');
+                lastMessage.querySelector('.message-bubble').innerHTML += '<div style="margin-top: 10px;"><input type="text" id="textAnswer" placeholder="Type your answer..." style="width: 100%; padding: 12px 14px; background: rgba(253, 92, 99, 0.08); border: 1.5px solid rgba(253, 92, 99, 0.15); border-radius: 12px; font-size: 13px; font-family: inherit; color: var(--gray-900);"><button class="proceed-btn" onclick="handleTextAnswer(' + currentQuestion + ')" style="margin-top: 8px;">Continue</button></div>';
+                setTimeout(() => document.getElementById('textAnswer').focus(), 100);
+                return;
+            }
+            
             const questionId = 'q' + currentQuestion;
             let optionsHtml = '<div class="options" data-question="' + questionId + '">';
             
@@ -485,6 +494,13 @@
 
             const lastMessage = document.querySelector('.message:last-child');
             lastMessage.querySelector('.message-bubble').innerHTML += optionsHtml;
+            
+            // Add explanation for climate question
+            if (q.key === 'climate') {
+                setTimeout(() => {
+                    addBotMessage('Let me explain! 🌡️\n\n• Cold & dry: If you use heating/AC a lot, or live in winter climates - your skin needs extra moisture\n\n• Hot & humid: If you sweat often or live in tropical areas - your skin may get oilier\n\n• Moderate: If your weather is balanced year-round - your skin stays pretty consistent');
+                }, 300);
+            }
         }
 
         function handleOption(qIdx, optIdx, btn) {
@@ -498,6 +514,19 @@
                 userResponses[q.key] = option;
                 btn.classList.add('selected');
                 addUserMessage(option);
+                currentQuestion++;
+                setTimeout(() => showQuestion(), 600);
+            }
+        }
+
+        function handleTextAnswer(qIdx) {
+            const q = questions[qIdx];
+            const input = document.getElementById('textAnswer');
+            const answer = input.value.trim();
+            
+            if (answer) {
+                userResponses[q.key] = answer;
+                addUserMessage(answer);
                 currentQuestion++;
                 setTimeout(() => showQuestion(), 600);
             }
@@ -545,6 +574,7 @@
             addBotMessage('Analyzing your profile... ✨');
             
             setTimeout(() => {
+                const name = userResponses.name || 'friend';
                 const sex = userResponses.sex || 'not specified';
                 const age = userResponses.age || 'not specified';
                 const skinType = userResponses.skinType || 'normal';
@@ -553,7 +583,7 @@
                 const stress = userResponses.stress || 'moderate stress';
                 const sunExposure = userResponses.sunExposure || 'occasionally';
 
-                addBotMessage('✅ Profile Summary:\n\nSex: ' + sex + '\nAge: ' + age + '\nSkin Type: ' + skinType + '\nConcerns: ' + (concerns.length > 0 ? concerns.join(', ') : 'General maintenance'));
+                addBotMessage('✅ ' + name + ', here\'s your Profile Summary:\n\nSex: ' + sex + '\nAge: ' + age + '\nSkin Type: ' + skinType + '\nConcerns: ' + (concerns.length > 0 ? concerns.join(', ') : 'General maintenance'));
 
                 setTimeout(() => {
                     let morningRoutine = '☀️ Your Morning Routine:\n\n';
