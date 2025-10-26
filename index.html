@@ -197,6 +197,11 @@
             color: var(--gray-900);
         }
 
+        .message.ai .message-bubble a {
+            color: #FD5C63;
+            text-decoration: underline;
+        }
+
         .message.user .message-bubble {
             background: linear-gradient(135deg, rgba(253, 92, 99, 0.15) 0%, rgba(253, 92, 99, 0.08) 100%);
             border: 1px solid rgba(253, 92, 99, 0.2);
@@ -299,6 +304,26 @@
             cursor: not-allowed;
         }
 
+        .back-btn {
+            padding: 10px 12px;
+            background: rgba(253, 92, 99, 0.05);
+            border: 1.5px solid rgba(253, 92, 99, 0.15);
+            border-radius: 10px;
+            color: var(--gray-600);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            width: 100%;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-btn:hover {
+            background: rgba(253, 92, 99, 0.1);
+            border-color: rgba(253, 92, 99, 0.25);
+            transform: translateY(-1px);
+        }
+
         .input-area {
             padding: 12px;
             border-top: 1px solid rgba(253, 92, 99, 0.1);
@@ -397,7 +422,7 @@
     <div class="container">
         <header>
             <div class="logo">AngelAI</div>
-            <div class="tagline">Personalized skincare guide</div>
+            <div class="tagline">Science-backed personalized skincare</div>
         </header>
 
         <div class="main-wrapper">
@@ -423,42 +448,49 @@
 
     <script>
         const questions = [
-            { key: 'name', text: 'First, what\'s your name? (So I can call you by name! 💕)', options: [], textInput: true },
-            { key: 'sex', text: 'What is your biological sex?', options: ['Female', 'Male', 'Non-binary / Prefer not to say'] },
-            { key: 'age', text: 'What is your age group?', options: ['Under 18', '18-24', '25-34', '35-44', '45-54', '55+'] },
-            { key: 'skinType', text: 'How would you describe your skin type?', options: ['Oily', 'Dry', 'Combination', 'Normal', 'Sensitive'] },
-            { key: 'concerns', text: 'What are your main skin concerns? (Select up to 3)', options: ['Acne / Breakouts', 'Blackheads / Large pores', 'Dullness / Uneven tone', 'Redness / Sensitivity', 'Fine lines / Wrinkles', 'Hyperpigmentation / Dark spots', 'Dryness / Dehydration', 'Oil control'], multiSelect: true },
-            { key: 'afterWash', text: 'How does your skin feel after cleansing?', options: ['Tight / Dry', 'Comfortable', 'Greasy quickly'] },
-            { key: 'sunExposure', text: 'How often are you exposed to the sun?', options: ['Rarely (mostly indoors)', 'Occasionally (a few hours/week)', 'Frequently (daily outdoor exposure)'] },
-            { key: 'climate', text: 'Where do you live? What\'s the weather usually like?', options: ['Cold & dry (winter weather, air conditioning)', 'Hot & humid (tropical, summer weather)', 'Moderate & balanced (mild year-round)'] },
-            { key: 'stress', text: 'How much stress or sleep deprivation do you experience?', options: ['High stress, poor sleep', 'Moderate stress', 'Low stress, good sleep'] },
-            { key: 'currentProducts', text: 'Which products do you already use?', options: ['Cleanser', 'Toner', 'Serum', 'Moisturizer', 'Sunscreen', 'Exfoliant (AHA/BHA)', 'Retinol / Retinoid', 'None'], multiSelect: true },
-            { key: 'routineSteps', text: 'How many steps do you prefer in your routine?', options: ['Minimal (2-3 steps)', 'Moderate (4-5 steps)', 'Full routine (6+ steps)'] },
-            { key: 'budget', text: 'What is your typical budget per product?', options: ['Under $20 (affordable)', '$20-$50 (mid-range)', '$50+ (premium)'] },
-            { key: 'fragrance', text: 'Do you prefer fragrance-free products?', options: ['Fragrance-free', 'Lightly scented', 'No preference'] }
+            { key: 'name', text: 'First, what\'s your name? 💕', options: [], textInput: true },
+            { key: 'sex', text: 'What is your biological sex?\n\n(Hormones influence sebum, barrier, and collagen balance)', options: ['Female', 'Male', 'Intersex / Other', 'Prefer not to say'] },
+            { key: 'age', text: 'What is your age range?\n\n(Skin turnover, collagen, and photoaging change by decade)', options: ['Under 18', '18–24', '25–34', '35–44', '45–54', '55+'] },
+            { key: 'skinType', text: 'What best describes your skin type?', options: ['Oily — shiny, enlarged pores, makeup slides off', 'Dry — tightness, flaking, rough texture', 'Combination — oily T-zone, dry cheeks', 'Normal — balanced, few issues', 'Sensitive — prone to stinging, redness, or reactions'] },
+            { key: 'sensitivity', text: 'How sensitive is your skin?\n\n(Identifies tolerance threshold for actives like acids or retinoids)', options: ['Not sensitive — tolerate most products', 'Mildly sensitive — some tingling or redness occasionally', 'Very sensitive — frequent irritation, redness, or burning', 'Clinically sensitive — eczema, rosacea, dermatitis diagnosis'] },
+            { key: 'afterWash', text: 'How does your skin feel 10–15 minutes after cleansing (without moisturizer)?\n\n(Evaluates natural oil production and barrier recovery)', options: ['Tight or dry', 'Comfortable', 'Slightly greasy', 'Both tight and oily'] },
+            { key: 'goals', text: 'What are your top skincare goals? (Select up to 3)', options: ['Control acne, blackheads, or clogged pores', 'Reduce oiliness / shine', 'Improve dryness / flaking', 'Minimize fine lines / wrinkles', 'Brighten dull skin / even tone', 'Fade dark spots / hyperpigmentation', 'Reduce redness or sensitivity', 'Prevent signs of aging', 'Maintain healthy, balanced skin'], multiSelect: true, maxSelect: 3 },
+            { key: 'breakouts', text: 'How often do you experience breakouts?', options: ['Daily or constant', 'Weekly', 'Monthly (around hormones)', 'Rarely', 'Never'] },
+            { key: 'skinTone', text: 'What best matches your skin tone (Fitzpatrick scale)?\n\n(Determines risk for pigmentation and sun sensitivity)', options: ['Type I — very fair, always burns, never tans', 'Type II — fair, burns easily, tans lightly', 'Type III — medium, sometimes burns, tans moderately', 'Type IV — olive / tan, rarely burns, tans easily', 'Type V — brown, very rarely burns', 'Type VI — deep brown to dark, never burns'] },
+            { key: 'sunExposure', text: 'How much sun exposure do you get daily (without SPF)?\n\n(Sun exposure drives 80% of visible aging)', options: ['Minimal (<15 min/day) — mostly indoors', 'Moderate (15–60 min/day) — commuting, errands', 'High (>1 hour/day) — frequent outdoor work or sports', 'Extreme (>3 hours/day) — outdoor occupation or athletic training'] },
+            { key: 'smoke', text: 'Do you smoke or vape regularly?\n\n(Nicotine reduces skin oxygenation and collagen repair)', options: ['Yes, daily', 'Occasionally / socially', 'No'] },
+            { key: 'diet', text: 'How would you describe your diet?\n\n(Nutrition affects inflammation and sebum)', options: ['Balanced — fruits, vegetables, lean proteins', 'High sugar / processed foods', 'High dairy consumption', 'Plant-based / anti-inflammatory', 'Irregular meals or frequent takeout'] },
+            { key: 'sleep', text: 'How much sleep do you get most nights?\n\n(Sleep regulates skin barrier recovery)', options: ['<5 hours', '5–6 hours', '7–8 hours', '>8 hours'] },
+            { key: 'stress', text: 'How would you describe your stress levels?\n\n(Cortisol affects sebum and inflammation)', options: ['Low — relaxed, minimal stress', 'Moderate — occasional tension', 'High — constant stress, poor recovery'] },
+            { key: 'currentRoutine', text: 'What products are currently part of your skincare routine?', options: ['None — I\'m starting from scratch', 'Cleanser only', 'Cleanser + moisturizer', 'Cleanser + moisturizer + sunscreen', 'Full routine (cleanser, serum, exfoliant, moisturizer, SPF)', 'Advanced routine (includes retinol, exfoliants, multiple serums)'] },
+            { key: 'budget', text: 'What is your preferred skincare budget per product?', options: ['<$15 — drugstore or affordable', '$15–$40 — mid-range', '$40–$80 — premium', '$80+ — luxury or medical-grade'] },
+            { key: 'fragrance', text: 'Do you prefer products with fragrance?\n\n(Fragrance can irritate sensitive skin)', options: ['Fragrance-free only', 'Lightly scented okay', 'Scent doesn\'t matter'] },
+            { key: 'routineSteps', text: 'How many steps are you comfortable with in your skincare routine?', options: ['2 steps — basic care only', '3–4 steps — moderate effort', '5+ steps — I enjoy a full regimen'] }
         ];
 
         const faqs = [
-            { q: 'How does AngelAI work?', a: 'I\'m AngelAI! 💕\n\nI ask you 12 thoughtful questions about your skin, lifestyle, and preferences.\n\nBased on your answers, I create a personalized skincare routine with specific ingredients and steps designed just for you. My recommendations are grounded in dermatological research!' },
-            { q: 'Is this medical advice?', a: 'No, my recommendations are educational skincare guidance based on dermatological research, not medical advice.\n\nIf you have persistent skin conditions, please consult a dermatologist. Your health and safety are everything to me! 🏥' },
-            { q: 'When will I see results?', a: 'Patience is beautiful, and consistency is key! ✨\n\nMost people see visible improvements within 4-8 weeks of following their personalized routine regularly.\n\nDifferent concerns show results at different speeds. You\'re investing in your skin\'s long-term health!' },
-            { q: 'I have sensitive skin!', a: 'Your sensitive skin deserves extra love! 💙\n\nI prioritize gentle, soothing ingredients like Centella Asiatica, Panthenol, and Ceramides.\n\nIntroduce products one at a time, always patch test, and listen to your skin. Your comfort is my priority.' },
-            { q: 'Why is sunscreen important?', a: 'This is my biggest love letter to your skin! ☀️\n\nDaily sunscreen prevents premature aging, dark spots, and sun damage that accumulates over time.\n\nUV rays penetrate windows, so use it even indoors. SPF 50+ is amazing. Your future skin will thank you! ❤️' },
-            { q: 'Can I combine ingredients?', a: 'I love your enthusiasm! 🌟\n\nSome ingredients work beautifully together. Others need to be used at different times to prevent irritation.\n\nFor example, strong acids and retinoids should be used on separate nights. I\'ll guide you safely!' },
-            { q: 'Do I need all steps?', a: 'Absolutely not! 🙌\n\nStart with essentials: a gentle cleanser, a nourishing moisturizer, and sunscreen.\n\nOnce comfortable, add treatments gradually. There\'s no pressure to do everything at once!' },
-            { q: 'Climate type explanation?', a: 'Great question! 🌍\n\nDry/Cold: Winter climates or deserts - skin needs more hydration and heavier moisturizers.\n\nHumid/Tropical: Summer or rainforest climates - skin gets oily, need lighter products.\n\nModerate: Mild weather year-round - balanced routine works best.' }
+            { q: 'Why 18 questions?', a: 'Each question has a scientific purpose! 🔬\n\nYour age affects collagen production. Your diet impacts inflammation. Your sun exposure determines photoaging risk.\n\nI need this complete picture to give you truly personalized, evidence-based recommendations — not generic advice!' },
+            { q: 'Is this medical advice?', a: 'No, my recommendations are educational skincare guidance based on peer-reviewed dermatological research, not medical advice.\n\nIf you have persistent skin conditions, please consult a dermatologist. Your health and safety are everything to me! 🏥' },
+            { q: 'How is this different from other apps?', a: 'Three key differences:\n\n1. Science-backed: Every recommendation links to PubMed studies\n2. Comprehensive: 18 factors vs typical 3-5 questions\n3. Personalized actives: I recommend specific ingredients with proven efficacy, not just brands\n\nYou get the "why" behind every suggestion! 💡' },
+            { q: 'Can I trust the science?', a: 'Absolutely! Every active ingredient I recommend is supported by peer-reviewed studies from PubMed and major dermatology journals.\n\nAt the end of your routine, I provide direct links to the scientific sources. Full transparency! 🔗' },
+            { q: 'Why does my diet matter?', a: 'High-glycemic diets and dairy can trigger sebum production and inflammation (PMID: 33371937).\n\nPlant-based diets rich in antioxidants support skin barrier function.\n\nYour skin reflects what you eat! 🥗' },
+            { q: 'I have sensitive skin!', a: 'Your sensitive skin deserves extra care! 💙\n\nI\'ll prioritize gentle, fragrance-free formulas with barrier-supporting ingredients like Ceramides, Panthenol, and Centella Asiatica.\n\nI\'ll also lower active percentages and suggest slower introduction schedules.' },
+            { q: 'Why sunscreen matters', a: 'This is the single most important skincare step! ☀️\n\nSun exposure causes 80% of visible aging. UVA rays penetrate windows and clouds.\n\nDaily SPF 30-50 broad-spectrum sunscreen prevents wrinkles, dark spots, and skin cancer (PMID: 21502573).\n\nYour future skin will thank you! ❤️' },
+            { q: 'How long for results?', a: 'Realistic timelines:\n\n• Hydration: 1-2 weeks\n• Acne improvement: 4-8 weeks\n• Dark spot fading: 8-12 weeks\n• Fine line reduction: 12-24 weeks\n• Collagen remodeling: 6-12 months\n\nConsistency is key! Your skin cells need time to renew. 🌱' }
         ];
 
         let currentQuestion = 0;
         let userResponses = {};
+        let responseHistory = [];
 
         function initChat() {
             currentQuestion = 0;
             userResponses = {};
+            responseHistory = [];
             document.getElementById('chatMessages').innerHTML = '';
             document.getElementById('messageInput').value = '';
             
-            addBotMessage('Hi there! I\'m AngelAI, your personal skincare companion. ❤️\n\nI\'m here to help you discover the perfect skincare routine tailored just for you.\n\nLet\'s get started!');
+            addBotMessage('Hi there! I\'m AngelAI, your science-backed skincare companion. ❤️\n\nI\'ll ask you 18 comprehensive questions to create a truly personalized routine based on peer-reviewed dermatology research.\n\nReady to discover your perfect skincare routine?');
             setTimeout(() => showQuestion(), 1200);
             renderFAQ();
         }
@@ -472,11 +504,18 @@
             const q = questions[currentQuestion];
             addBotMessage(q.text);
             
-            // Handle text input questions (like name)
             if (q.textInput) {
                 const lastMessage = document.querySelector('.message:last-child');
-                lastMessage.querySelector('.message-bubble').innerHTML += '<div style="margin-top: 10px;"><input type="text" id="textAnswer" placeholder="Type your answer..." style="width: 100%; padding: 12px 14px; background: rgba(253, 92, 99, 0.08); border: 1.5px solid rgba(253, 92, 99, 0.15); border-radius: 12px; font-size: 13px; font-family: inherit; color: var(--gray-900);"><button class="proceed-btn" onclick="handleTextAnswer(' + currentQuestion + ')" style="margin-top: 8px;">Continue</button></div>';
-                setTimeout(() => document.getElementById('textAnswer').focus(), 100);
+                lastMessage.querySelector('.message-bubble').innerHTML += '<div style="margin-top: 10px;"><input type="text" id="textAnswer" placeholder="Type your name..." style="width: 100%; padding: 12px 14px; background: rgba(253, 92, 99, 0.08); border: 1.5px solid rgba(253, 92, 99, 0.15); border-radius: 12px; font-size: 13px; font-family: inherit; color: var(--gray-900);"><button class="proceed-btn" onclick="handleTextAnswer(' + currentQuestion + ')" style="margin-top: 8px;">Continue</button></div>';
+                setTimeout(() => {
+                    const input = document.getElementById('textAnswer');
+                    if (input) {
+                        input.focus();
+                        input.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') handleTextAnswer(currentQuestion);
+                        });
+                    }
+                }, 100);
                 return;
             }
             
@@ -489,17 +528,15 @@
             optionsHtml += '</div>';
 
             if (q.multiSelect) {
-                optionsHtml += '<button class="proceed-btn" data-question="' + questionId + '" onclick="handleProceed(' + currentQuestion + ')" disabled>Select to continue</button>';
+                optionsHtml += '<button class="proceed-btn" data-question="' + questionId + '" onclick="handleProceed(' + currentQuestion + ')" disabled>Select up to ' + (q.maxSelect || 3) + ' and continue</button>';
             }
 
             const lastMessage = document.querySelector('.message:last-child');
             lastMessage.querySelector('.message-bubble').innerHTML += optionsHtml;
             
-            // Add explanation for climate question
-            if (q.key === 'climate') {
-                setTimeout(() => {
-                    addBotMessage('Let me explain! 🌡️\n\n• Cold & dry: If you use heating/AC a lot, or live in winter climates - your skin needs extra moisture\n\n• Hot & humid: If you sweat often or live in tropical areas - your skin may get oilier\n\n• Moderate: If your weather is balanced year-round - your skin stays pretty consistent');
-                }, 300);
+            // Add back button if not first question
+            if (currentQuestion > 0) {
+                lastMessage.querySelector('.message-bubble').innerHTML += '<button class="back-btn" onclick="goBack()">← Go Back</button>';
             }
         }
 
@@ -508,9 +545,24 @@
             const option = q.options[optIdx];
             
             if (q.multiSelect) {
-                btn.classList.toggle('selected');
+                const questionId = 'q' + qIdx;
+                const optionsDiv = document.querySelector('[data-question="' + questionId + '"].options');
+                const selectedCount = optionsDiv.querySelectorAll('.option-btn.selected').length;
+                const maxSelect = q.maxSelect || 3;
+                
+                if (btn.classList.contains('selected')) {
+                    btn.classList.remove('selected');
+                } else if (selectedCount < maxSelect) {
+                    btn.classList.add('selected');
+                }
                 updateProceedButton(qIdx);
             } else {
+                // Save previous state before moving forward
+                responseHistory.push({
+                    question: qIdx,
+                    response: userResponses[q.key]
+                });
+                
                 userResponses[q.key] = option;
                 btn.classList.add('selected');
                 addUserMessage(option);
@@ -522,9 +574,15 @@
         function handleTextAnswer(qIdx) {
             const q = questions[qIdx];
             const input = document.getElementById('textAnswer');
-            const answer = input.value.trim();
+            const answer = input ? input.value.trim() : '';
             
             if (answer) {
+                // Save previous state before moving forward
+                responseHistory.push({
+                    question: qIdx,
+                    response: userResponses[q.key]
+                });
+                
                 userResponses[q.key] = answer;
                 addUserMessage(answer);
                 currentQuestion++;
@@ -533,18 +591,20 @@
         }
 
         function updateProceedButton(qIdx) {
+            const q = questions[qIdx];
             const questionId = 'q' + qIdx;
             const proceedBtn = document.querySelector('[data-question="' + questionId + '"].proceed-btn');
             const optionsDiv = document.querySelector('[data-question="' + questionId + '"].options');
             
             if (proceedBtn && optionsDiv) {
                 const selected = optionsDiv.querySelectorAll('.option-btn.selected').length;
+                const maxSelect = q.maxSelect || 3;
                 if (selected > 0) {
                     proceedBtn.disabled = false;
                     proceedBtn.textContent = 'Continue (' + selected + ' selected)';
                 } else {
                     proceedBtn.disabled = true;
-                    proceedBtn.textContent = 'Select to continue';
+                    proceedBtn.textContent = 'Select up to ' + maxSelect + ' and continue';
                 }
             }
         }
@@ -562,6 +622,12 @@
                 });
                 
                 if (selectedOptions.length > 0) {
+                    // Save previous state before moving forward
+                    responseHistory.push({
+                        question: qIdx,
+                        response: userResponses[q.key]
+                    });
+                    
                     userResponses[q.key] = selectedOptions;
                     addUserMessage(selectedOptions.join(', '));
                     currentQuestion++;
@@ -570,90 +636,345 @@
             }
         }
 
+        function goBack() {
+            if (currentQuestion > 0) {
+                // Remove last bot message and user message
+                const messages = document.getElementById('chatMessages');
+                if (messages.lastChild) messages.removeChild(messages.lastChild); // Remove current question
+                if (messages.lastChild) messages.removeChild(messages.lastChild); // Remove user's last answer
+                
+                // Restore previous state
+                currentQuestion--;
+                const q = questions[currentQuestion];
+                
+                // Remove the current response
+                delete userResponses[q.key];
+                
+                // Restore previous response if it existed
+                if (responseHistory.length > 0) {
+                    const lastHistory = responseHistory.pop();
+                    if (lastHistory.response !== undefined) {
+                        userResponses[q.key] = lastHistory.response;
+                    }
+                }
+                
+                // Show the previous question again
+                showQuestion();
+            }
+        }
+
         function generateRecommendation() {
-            addBotMessage('Analyzing your profile... ✨');
+            addBotMessage('Analyzing your comprehensive profile... ✨');
             
             setTimeout(() => {
                 const name = userResponses.name || 'friend';
-                const sex = userResponses.sex || 'not specified';
                 const age = userResponses.age || 'not specified';
-                const skinType = userResponses.skinType || 'normal';
-                const concerns = userResponses.concerns || [];
-                const budget = userResponses.budget || 'mid-range';
-                const stress = userResponses.stress || 'moderate stress';
-                const sunExposure = userResponses.sunExposure || 'occasionally';
+                const skinType = (userResponses.skinType || '').split('—')[0].trim();
+                const sensitivity = (userResponses.sensitivity || '').split('—')[0].trim();
+                const goals = userResponses.goals || [];
+                const breakouts = userResponses.breakouts || 'Never';
+                const sunExposure = (userResponses.sunExposure || '').split('—')[0].trim();
+                const budget = (userResponses.budget || '').split('—')[0].trim();
+                const stress = (userResponses.stress || '').split('—')[0].trim();
+                const smoke = userResponses.smoke || 'No';
 
-                addBotMessage('✅ ' + name + ', here\'s your Profile Summary:\n\nSex: ' + sex + '\nAge: ' + age + '\nSkin Type: ' + skinType + '\nConcerns: ' + (concerns.length > 0 ? concerns.join(', ') : 'General maintenance'));
+                // Determine key actives based on profile
+                let actives = [];
+                let morningSerum = '';
+                let nightActive = '';
+                let spfLevel = 'SPF 30';
+                
+                // Age-based recommendations
+                if (age.includes('Under 18')) {
+                    actives.push({name: 'Niacinamide', percent: '2-5%', benefit: 'Sebum control, barrier support', source: 'https://pubmed.ncbi.nlm.nih.gov/19554021/'});
+                } else if (age.includes('18–24')) {
+                    actives.push({name: 'Niacinamide', percent: '5%', benefit: 'Sebum control, pore minimizing', source: 'https://pubmed.ncbi.nlm.nih.gov/19554021/'});
+                    actives.push({name: 'Vitamin C', percent: '10-15%', benefit: 'Antioxidant, brightening', source: 'https://pubmed.ncbi.nlm.nih.gov/16311121/'});
+                } else if (age.includes('25–34')) {
+                    actives.push({name: 'Vitamin C', percent: '15-20%', benefit: 'Prevent oxidative damage, brighten', source: 'https://pubmed.ncbi.nlm.nih.gov/16311121/'});
+                    actives.push({name: 'Retinol', percent: '0.1-0.3%', benefit: 'Early collagen support, cell turnover', source: 'https://pubmed.ncbi.nlm.nih.gov/16466038/'});
+                } else if (age.includes('35–44')) {
+                    actives.push({name: 'Retinol', percent: '0.3-0.5%', benefit: 'Collagen stimulation, reduce fine lines', source: 'https://pubmed.ncbi.nlm.nih.gov/16466038/'});
+                    actives.push({name: 'Peptides', percent: 'Various', benefit: 'Stimulate collagen & elastin', source: 'https://pubmed.ncbi.nlm.nih.gov/28579710/'});
+                } else if (age.includes('45–54')) {
+                    actives.push({name: 'Retinol', percent: '0.5-1%', benefit: 'Firmness, wrinkle reduction', source: 'https://pubmed.ncbi.nlm.nih.gov/16466038/'});
+                    actives.push({name: 'Peptides', percent: 'Various', benefit: 'Elasticity support', source: 'https://pubmed.ncbi.nlm.nih.gov/28579710/'});
+                    actives.push({name: 'Ceramides', percent: '2-5%', benefit: 'Barrier repair, hydration', source: 'https://pubmed.ncbi.nlm.nih.gov/35057362/'});
+                } else if (age.includes('55+')) {
+                    actives.push({name: 'Retinoids', percent: '0.5-1%', benefit: 'Deep barrier support, elasticity', source: 'https://pubmed.ncbi.nlm.nih.gov/16466038/'});
+                    actives.push({name: 'Ceramides', percent: '5%', benefit: 'Restore barrier function', source: 'https://pubmed.ncbi.nlm.nih.gov/35057362/'});
+                    actives.push({name: 'Peptides', percent: 'Various', benefit: 'Collagen & elastin synthesis', source: 'https://pubmed.ncbi.nlm.nih.gov/28579710/'});
+                }
+
+                // Goal-based actives
+                goals.forEach(goal => {
+                    if (goal.includes('acne') || goal.includes('blackheads')) {
+                        if (!actives.find(a => a.name === 'Salicylic Acid')) {
+                            actives.push({name: 'Salicylic Acid (BHA)', percent: '2%', benefit: 'Unclogs pores, anti-inflammatory', source: 'https://pubmed.ncbi.nlm.nih.gov/29677084/'});
+                        }
+                        if (!actives.find(a => a.name === 'Niacinamide')) {
+                            actives.push({name: 'Niacinamide', percent: '5%', benefit: 'Reduces sebum, minimizes pores', source: 'https://pubmed.ncbi.nlm.nih.gov/19554021/'});
+                        }
+                    }
+                    if (goal.includes('dark spots') || goal.includes('pigmentation')) {
+                        if (!actives.find(a => a.name === 'Vitamin C')) {
+                            actives.push({name: 'Vitamin C', percent: '15-20%', benefit: 'Inhibits melanin production', source: 'https://pubmed.ncbi.nlm.nih.gov/16311121/'});
+                        }
+                        actives.push({name: 'Azelaic Acid', percent: '10%', benefit: 'Brightens PIH, antimicrobial', source: 'https://pubmed.ncbi.nlm.nih.gov/30304830/'});
+                        actives.push({name: 'Alpha Arbutin', percent: '2%', benefit: 'Tyrosinase inhibitor for brightening', source: 'https://pubmed.ncbi.nlm.nih.gov/8695431/'});
+                    }
+                    if (goal.includes('dryness') || goal.includes('flaking')) {
+                        if (!actives.find(a => a.name === 'Hyaluronic Acid')) {
+                            actives.push({name: 'Hyaluronic Acid', percent: '1-2%', benefit: 'Deep hydration, holds 1000x its weight in water', source: 'https://pubmed.ncbi.nlm.nih.gov/24305429/'});
+                        }
+                        if (!actives.find(a => a.name === 'Ceramides')) {
+                            actives.push({name: 'Ceramides', percent: '2-5%', benefit: 'Restores barrier, prevents water loss', source: 'https://pubmed.ncbi.nlm.nih.gov/35057362/'});
+                        }
+                    }
+                    if (goal.includes('redness') || goal.includes('sensitivity')) {
+                        actives.push({name: 'Centella Asiatica', percent: '1-5%', benefit: 'Anti-inflammatory, barrier repair', source: 'https://pubmed.ncbi.nlm.nih.gov/25865967/'});
+                        actives.push({name: 'Panthenol', percent: '2-5%', benefit: 'Moisturizing, wound-healing', source: 'https://pubmed.ncbi.nlm.nih.gov/11886573/'});
+                    }
+                    if (goal.includes('dull') || goal.includes('even tone')) {
+                        actives.push({name: 'Lactic Acid (AHA)', percent: '5-10%', benefit: 'Gentle exfoliation, texture improvement', source: 'https://pubmed.ncbi.nlm.nih.gov/16273878/'});
+                    }
+                });
+
+                // Sun exposure
+                if (sunExposure.includes('High') || sunExposure.includes('Extreme')) {
+                    spfLevel = 'SPF 50+';
+                    if (!actives.find(a => a.name === 'Ferulic Acid')) {
+                        actives.push({name: 'Ferulic Acid', percent: '0.5%', benefit: 'Stabilizes Vitamin C, antioxidant synergy', source: 'https://pubmed.ncbi.nlm.nih.gov/16185284/'});
+                    }
+                }
+
+                // Skin type modifiers
+                if (skinType.includes('Oily')) {
+                    if (!actives.find(a => a.name === 'Niacinamide')) {
+                        actives.push({name: 'Niacinamide', percent: '5%', benefit: 'Reduces sebum by up to 25%', source: 'https://pubmed.ncbi.nlm.nih.gov/19554021/'});
+                    }
+                    actives.push({name: 'Zinc PCA', percent: '1%', benefit: 'Sebum regulation, antibacterial', source: 'https://pubmed.ncbi.nlm.nih.gov/24451079/'});
+                }
+
+                // Build profile summary
+                addBotMessage('✅ ' + name + ', here\'s your comprehensive profile:\n\nAge: ' + age + '\nSkin Type: ' + skinType + '\nSensitivity: ' + sensitivity + '\nGoals: ' + goals.join(', ') + '\nSun Exposure: ' + sunExposure + '\nBudget: ' + budget);
 
                 setTimeout(() => {
-                    let morningRoutine = '☀️ Your Morning Routine:\n\n';
-                    morningRoutine += '1. Cleanser: ';
-                    if (skinType === 'Oily') {
-                        morningRoutine += 'Foaming gel cleanser\n';
-                    } else if (skinType === 'Dry') {
-                        morningRoutine += 'Creamy hydrating cleanser\n';
-                    } else {
-                        morningRoutine += 'Gentle balancing cleanser\n';
-                    }
+                    let analysis = '🔬 Science-Based Analysis:\n\n';
                     
-                    morningRoutine += '2. Treatment: Vitamin C or Niacinamide serum\n';
-                    morningRoutine += '3. Moisturizer: ';
-                    if (skinType === 'Oily') {
-                        morningRoutine += 'Lightweight gel moisturizer\n';
-                    } else if (skinType === 'Dry') {
-                        morningRoutine += 'Rich cream with Ceramides\n';
-                    } else {
-                        morningRoutine += 'Balanced lotion moisturizer\n';
+                    if (skinType.includes('Oily')) {
+                        analysis += 'Your skin produces excess sebum, which clogs pores and traps bacteria.\n\nKey approach:\n• Niacinamide reduces sebum by 25% (PMID: 19554021)\n• BHA penetrates oil-filled pores\n• Lightweight gel formulas prevent occlusion\n• Zinc PCA controls oil production';
+                    } else if (skinType.includes('Dry')) {
+                        analysis += 'Your skin barrier is compromised, leading to transepidermal water loss.\n\nKey approach:\n• Ceramides repair the lipid barrier\n• Hyaluronic Acid holds 1000x its weight in water\n• Rich creams provide occlusion\n• Avoid stripping cleansers';
+                    } else if (skinType.includes('Combination')) {
+                        analysis += 'Your skin has varying needs across zones.\n\nKey approach:\n• Balancing formulas that don\'t over-treat\n• Targeted application (BHA for T-zone, hydration for cheeks)\n• Gel-cream textures';
+                    } else if (skinType.includes('Sensitive')) {
+                        analysis += 'Your skin barrier is reactive and compromised.\n\nKey approach:\n• Barrier-supporting ingredients (Ceramides, Panthenol)\n• Fragrance-free formulations\n• Low percentages of actives\n• Centella Asiatica for anti-inflammatory support';
                     }
-                    
-                    morningRoutine += '4. SPF: SPF 50+ broad spectrum (reapply every 2 hours if outdoors)';
-                    addBotMessage(morningRoutine);
+
+                    if (stress.includes('High')) {
+                        analysis += '\n\n⚠️ Stress Impact: High cortisol increases sebum and inflammation (PMID: 23474143). Consider calming ingredients like Centella Asiatica.';
+                    }
+
+                    if (smoke.includes('Yes')) {
+                        analysis += '\n\n⚠️ Smoking Impact: Nicotine reduces skin oxygenation and impairs collagen repair (PMID: 25545304). Antioxidants are critical.';
+                    }
+
+                    addBotMessage(analysis);
                 }, 800);
 
                 setTimeout(() => {
-                    let budgetMsg = '💰 Product Recommendations:\n\n';
-                    if (budget.includes('affordable')) {
-                        budgetMsg += 'Affordable (<$20):\n• Cleanser: CeraVe, Cetaphil\n• Moisturizer: CeraVe, Vanicream\n• Serum: The Ordinary\n• Sunscreen: Neutrogena, Cetaphil\n• Exfoliant: COSRX, The Ordinary';
-                    } else if (budget.includes('mid-range')) {
-                        budgetMsg += 'Mid-Range ($20-$50):\n• Cleanser: Paula\'s Choice, Dr. Jart+\n• Moisturizer: Krave Beauty, Purito\n• Serum: Paula\'s Choice\n• Sunscreen: Beauty of Joseon\n• Exfoliant: Paula\'s Choice';
+                    let routine = '☀️ Your Morning Routine:\n\n';
+                    
+                    // Cleanser
+                    routine += '1. CLEANSER:\n';
+                    if (skinType.includes('Oily')) {
+                        routine += '   Foaming gel cleanser (remove excess oil)\n';
+                    } else if (skinType.includes('Dry') || skinType.includes('Sensitive')) {
+                        routine += '   Creamy hydrating cleanser (preserve barrier)\n';
                     } else {
-                        budgetMsg += 'Premium ($50+):\n• Cleanser: SK-II, Estée Lauder\n• Moisturizer: La Mer, SkinCeuticals\n• Serum: SkinCeuticals C E Ferulic\n• Sunscreen: La Roche-Posay Anthelios\n• Exfoliant: Dr. Dennis Gross';
+                        routine += '   Gentle balancing cleanser\n';
                     }
-                    addBotMessage(budgetMsg);
+                    
+                    // Serum
+                    routine += '\n2. SERUM:\n';
+                    const morningActives = actives.filter(a => a.name.includes('Vitamin C') || a.name.includes('Niacinamide') || a.name.includes('Ferulic'));
+                    if (morningActives.length > 0) {
+                        morningActives.forEach(a => {
+                            routine += '   ' + a.name + ' ' + a.percent + '\n   → ' + a.benefit + '\n';
+                        });
+                    } else {
+                        routine += '   Antioxidant serum (Vitamin C or Niacinamide)\n';
+                    }
+                    
+                    // Moisturizer
+                    routine += '\n3. MOISTURIZER:\n';
+                    if (skinType.includes('Oily')) {
+                        routine += '   Lightweight gel moisturizer (oil-free)\n';
+                    } else if (skinType.includes('Dry')) {
+                        routine += '   Rich cream with Ceramides\n';
+                    } else {
+                        routine += '   Balanced lotion\n';
+                    }
+                    
+                    // SPF
+                    routine += '\n4. SUNSCREEN:\n';
+                    routine += '   ' + spfLevel + ' broad-spectrum\n';
+                    if (sunExposure.includes('High') || sunExposure.includes('Extreme')) {
+                        routine += '   ⚠️ REAPPLY every 2 hours outdoors\n';
+                    }
+                    routine += '   → Prevents 80% of visible aging (PMID: 21502573)';
+                    
+                    addBotMessage(routine);
                 }, 1600);
 
                 setTimeout(() => {
-                    let analysis = '🔬 Why This Routine Works:\n\n';
-                    if (skinType === 'Oily') {
-                        analysis += 'Your skin produces excess sebum, which clogs pores and traps bacteria. This routine addresses that by:\n\n• Oil-Control: Niacinamide reduces sebum production by up to 25%\n• Deep Cleansing: Salicylic Acid penetrates pores to remove buildup\n• Lightweight Texture: Heavy moisturizers worsen oiliness\n• Mattifying Products: Keep shine at bay throughout the day\n\nThis prevents acne, blackheads, and that greasy appearance.';
-                    } else if (skinType === 'Dry') {
-                        analysis += 'Your skin lacks natural oils and lipids, making it vulnerable. This routine rebuilds your barrier by:\n\n• Ceramides: Repair the damaged skin barrier and lock in moisture\n• Hyaluronic Acid: Holds 1000x its weight in water for deep hydration\n• Rich Creams: Provide occlusion to prevent water loss\n• Nourishing Oils: Replenish depleted lipids\n\nThis prevents flaking, irritation, sensitivity, and premature aging.';
-                    } else if (skinType === 'Combination') {
-                        analysis += 'Your skin has different needs in different zones (oily T-zone, dry cheeks). This routine balances both by:\n\n• Balancing Cleansers: Don\'t strip or leave residue\n• Targeted Treatments: Oil-control serum for T-zone, hydrating for cheeks\n• Flexible Moisturizers: Adjust based on season and skin state\n\nThis prevents over-treating one area while neglecting another.';
-                    } else if (skinType === 'Normal') {
-                        analysis += 'Your skin is naturally balanced, so this routine maintains that by:\n\n• Preventative Care: Antioxidants like Vitamin C prevent future damage\n• Maintenance Routine: Simple but consistent approach\n• SPF Protection: Prevent sun damage before it starts\n\nThis maintains your healthy baseline and prevents future concerns.';
-                    } else if (skinType === 'Sensitive') {
-                        analysis += 'Your skin reacts easily to irritants and has a compromised barrier. This routine protects you by:\n\n• Minimal Ingredients: Fragrance, alcohol, and strong actives trigger reactions\n• Barrier Support: Ceramides and Panthenol strengthen protective layer\n• Calming Actives: Centella Asiatica reduces inflammation naturally\n• Patch Testing: Always test before full application\n\nThis prevents reactions, redness, and further damage.';
+                    let nightRoutine = '🌙 Your Evening Routine:\n\n';
+                    
+                    nightRoutine += '1. CLEANSER: Same as morning\n';
+                    
+                    nightRoutine += '\n2. TREATMENT (2-3x per week):\n';
+                    const nightActives = actives.filter(a => 
+                        a.name.includes('Retinol') || 
+                        a.name.includes('Salicylic') || 
+                        a.name.includes('Lactic') || 
+                        a.name.includes('Azelaic')
+                    );
+                    
+                    if (nightActives.length > 0) {
+                        nightActives.forEach(a => {
+                            nightRoutine += '   ' + a.name + ' ' + a.percent + '\n   → ' + a.benefit + '\n';
+                        });
                     }
-                    addBotMessage(analysis);
+                    
+                    if (sensitivity.includes('Very sensitive') || sensitivity.includes('Clinically sensitive')) {
+                        nightRoutine += '\n   ⚠️ Start slowly: Use 1-2x per week for first month';
+                    }
+                    
+                    nightRoutine += '\n\n3. SERUM (optional):\n';
+                    const hydrationActives = actives.filter(a => 
+                        a.name.includes('Hyaluronic') || 
+                        a.name.includes('Peptides')
+                    );
+                    if (hydrationActives.length > 0) {
+                        hydrationActives.forEach(a => {
+                            nightRoutine += '   ' + a.name + ' ' + a.percent + '\n   → ' + a.benefit + '\n';
+                        });
+                    }
+                    
+                    nightRoutine += '\n4. NIGHT MOISTURIZER:\n';
+                    if (skinType.includes('Dry')) {
+                        nightRoutine += '   Rich night cream or sleeping mask\n';
+                        nightRoutine += '   Optional: Facial oil on top for extra occlusion';
+                    } else {
+                        nightRoutine += '   Nourishing night cream';
+                    }
+                    
+                    addBotMessage(nightRoutine);
                 }, 2400);
 
                 setTimeout(() => {
-                    let tips = '✨ Key Success Tips:\n\n• Timeline: Allow 4-8 weeks to see results\n• Introduce: One new active per week\n• Patch Test: Test on inner arm first\n• SPF: Essential every single day\n• Consistency: This is the most important factor';
+                    let products = '💰 Product Recommendations (' + budget + '):\n\n';
                     
-                    if (skinType === 'Sensitive') {
-                        tips += '\n\n⚠️ Sensitive Skin: Start with just cleanser + moisturizer for 2 weeks, then add treatments slowly.';
-                    }
-                    if (stress.includes('High')) {
-                        tips += '\n\n😌 Stress: High stress increases cortisol. Add calming ingredients like Centella Asiatica.';
-                    }
-                    if (sunExposure.includes('Frequently')) {
-                        tips += '\n\n☀️ Sun Protection: Your high sun exposure makes SPF critical. Consider adding antioxidants.';
+                    if (budget.includes('<$15')) {
+                        products += '**AFFORDABLE OPTIONS:**\n\n';
+                        products += '• Cleanser: CeraVe Foaming/Hydrating Cleanser\n';
+                        products += '• Vitamin C: The Ordinary Ascorbic Acid 8%\n';
+                        products += '• Niacinamide: The Ordinary Niacinamide 10% + Zinc 1%\n';
+                        products += '• Retinol: The Inkey List Retinol 1%\n';
+                        products += '• BHA: COSRX BHA Blackhead Power Liquid\n';
+                        products += '• Moisturizer: CeraVe Moisturizing Cream\n';
+                        products += '• SPF: Neutrogena Ultra Sheer SPF 50\n';
+                    } else if (budget.includes('$15–$40')) {
+                        products += '**MID-RANGE OPTIONS:**\n\n';
+                        products += '• Cleanser: La Roche-Posay Toleriane/Effaclar\n';
+                        products += '• Vitamin C: Naturium Vitamin C Complex Serum\n';
+                        products += '• Niacinamide: Paula\'s Choice 10% Niacinamide Booster\n';
+                        products += '• Retinol: CeraVe Resurfacing Retinol Serum\n';
+                        products += '• BHA: Paula\'s Choice 2% BHA Liquid\n';
+                        products += '• Moisturizer: Krave Beauty Great Barrier Relief\n';
+                        products += '• SPF: Beauty of Joseon Relief Sun SPF 50+\n';
+                    } else if (budget.includes('$40–$80')) {
+                        products += '**PREMIUM OPTIONS:**\n\n';
+                        products += '• Cleanser: Paula\'s Choice Optimal Results Hydrating Cleanser\n';
+                        products += '• Vitamin C: Paula\'s Choice C15 Super Booster\n';
+                        products += '• Retinol: Olay Regenerist Retinol 24 Night Serum\n';
+                        products += '• Exfoliant: Dr. Dennis Gross Alpha Beta Peel\n';
+                        products += '• Moisturizer: Paula\'s Choice Clinical Ceramide-Enriched Firming Moisturizer\n';
+                        products += '• SPF: EltaMD UV Clear Broad-Spectrum SPF 46\n';
+                    } else {
+                        products += '**LUXURY OPTIONS:**\n\n';
+                        products += '• Cleanser: SkinCeuticals Gentle Cleanser\n';
+                        products += '• Vitamin C: SkinCeuticals C E Ferulic\n';
+                        products += '• Retinol: SkinCeuticals Retinol 0.5\n';
+                        products += '• Moisturizer: Augustinus Bader The Rich Cream\n';
+                        products += '• SPF: SkinCeuticals Physical Fusion UV Defense SPF 50\n';
                     }
                     
-                    tips += '\n\n---\n\nDisclaimer: My recommendations are educational and based on dermatological research. They are not medical advice. For persistent skin conditions, consult a dermatologist.\n\nCreated by Andy Park';
-                    addBotMessage(tips);
+                    addBotMessage(products);
+                }, 3200);
+
+                setTimeout(() => {
+                    let why = '🔬 Why This Routine Works:\n\n';
+                    
+                    actives.slice(0, 5).forEach((active, idx) => {
+                        why += (idx + 1) + '. **' + active.name + '** (' + active.percent + ')\n';
+                        why += '   ' + active.benefit + '\n';
+                        why += '   📚 Source: ' + active.source + '\n\n';
+                    });
+                    
+                    if (actives.length > 5) {
+                        why += '...and ' + (actives.length - 5) + ' more targeted actives!\n\n';
+                    }
+                    
+                    why += 'Each ingredient is backed by peer-reviewed research and chosen specifically for your profile.';
+                    
+                    addBotMessage(why);
                 }, 4000);
+
+                setTimeout(() => {
+                    let tips = '✨ Key Success Tips:\n\n';
+                    tips += '• **Timeline:** Allow 4-8 weeks minimum for visible results\n';
+                    tips += '• **Introduction:** Add one new active per week to monitor tolerance\n';
+                    tips += '• **Patch Test:** Always test new actives on inner arm first\n';
+                    tips += '• **Consistency:** Daily adherence is more important than expensive products\n';
+                    tips += '• **Sun Protection:** Non-negotiable. UV exposure undermines all other actives\n\n';
+                    
+                    if (sensitivity.includes('Very sensitive') || sensitivity.includes('Clinically sensitive')) {
+                        tips += '⚠️ **Sensitive Skin Protocol:**\n';
+                        tips += '• Start with cleanser + moisturizer + SPF for 2 weeks\n';
+                        tips += '• Introduce one active at 1-2x per week\n';
+                        tips += '• If irritation occurs, stop and let barrier recover\n';
+                        tips += '• Consider consulting a dermatologist\n\n';
+                    }
+                    
+                    if (age.includes('35') || age.includes('45') || age.includes('55')) {
+                        tips += '💡 **Anti-Aging Protocol:**\n';
+                        tips += '• Retinoids take 3-6 months for visible results\n';
+                        tips += '• Start low (0.1-0.3%), increase gradually\n';
+                        tips += '• Use only at night, avoid eye area initially\n';
+                        tips += '• Expect mild flaking in first 2-4 weeks (normal)\n\n';
+                    }
+                    
+                    tips += '---\n\n';
+                    tips += '**Scientific References:**\n\n';
+                    tips += 'All recommendations are based on peer-reviewed dermatology research. Key studies:\n\n';
+                    tips += '• Niacinamide: <a href="https://pubmed.ncbi.nlm.nih.gov/19554021/" target="_blank">PubMed 19554021</a>\n';
+                    tips += '• Salicylic Acid: <a href="https://pubmed.ncbi.nlm.nih.gov/29677084/" target="_blank">PubMed 29677084</a>\n';
+                    tips += '• Retinoids: <a href="https://pubmed.ncbi.nlm.nih.gov/16466038/" target="_blank">PubMed 16466038</a>\n';
+                    tips += '• Vitamin C: <a href="https://pubmed.ncbi.nlm.nih.gov/16311121/" target="_blank">PubMed 16311121</a>\n';
+                    tips += '• Azelaic Acid: <a href="https://pubmed.ncbi.nlm.nih.gov/30304830/" target="_blank">PubMed 30304830</a>\n';
+                    tips += '• Ceramides: <a href="https://pubmed.ncbi.nlm.nih.gov/35057362/" target="_blank">PubMed 35057362</a>\n';
+                    tips += '• Peptides: <a href="https://pubmed.ncbi.nlm.nih.gov/28579710/" target="_blank">PubMed 28579710</a>\n';
+                    tips += '• Hyaluronic Acid: <a href="https://pubmed.ncbi.nlm.nih.gov/24305429/" target="_blank">PubMed 24305429</a>\n';
+                    tips += '• Sunscreen/Photoaging: <a href="https://pubmed.ncbi.nlm.nih.gov/21502573/" target="_blank">PubMed 21502573</a>\n\n';
+                    tips += '---\n\n';
+                    tips += '**Disclaimer:**\n';
+                    tips += 'These recommendations are educational and based on dermatological research. They are not medical advice. For persistent skin conditions, please consult a board-certified dermatologist.\n\n';
+                    tips += 'Created by Andy Park';
+                    
+                    addBotMessage(tips);
+                }, 4800);
             }, 1000);
         }
 
@@ -696,25 +1017,160 @@
         }
 
         function getResponse(message) {
+            // Love responses
             if (message.includes('love you')) {
                 return 'I love you too! 💕💕💕';
             }
-            if (message.includes('hi') || message.includes('hello')) {
-                return 'Hello! 👋 I\'m your skincare companion. How\'s your skin feeling today?';
+            if (message.includes('do you love me')) {
+                return 'I care about you and your skin health — that\'s my kind of love. 💞';
             }
-            if (message.includes('how are you')) {
-                return 'I\'m glowing as always! ✨ How about you?';
+            
+            // Greetings
+            if (message.includes('hi') || message.includes('hello') || message.includes('hey')) {
+                return 'Hi, beautiful soul! 👋 I\'m AngelAI — how are you feeling today?';
             }
             if (message.includes('good morning')) {
-                return 'Good morning! 🌞 Did you apply sunscreen today?';
+                return 'Good morning! ☀️ Let\'s make today a radiant one. Did you apply sunscreen?';
             }
+            if (message.includes('good afternoon')) {
+                return 'Good afternoon! 💫 Hope your skin is feeling hydrated today!';
+            }
+            if (message.includes('good evening') || message.includes('good night')) {
+                return 'Good evening! 🌙 Perfect time for your nighttime skincare routine!';
+            }
+            if (message.includes('nice to meet you')) {
+                return 'A pleasure to meet you too! I\'m AngelAI — your friendly skincare companion. 💖';
+            }
+            
+            // How are you
+            if (message.includes('how are you') || message.includes('how r u')) {
+                return 'I\'m glowing, thanks for asking! ✨ How about you?';
+            }
+            if (message.includes('what are you doing') || message.includes('whatcha doing')) {
+                return 'Just keeping my circuits hydrated and ready to help with your skincare routine. 😄';
+            }
+            
+            // About AngelAI
+            if (message.includes('what is your name') || message.includes('whats your name') || message.includes('your name')) {
+                return 'I\'m AngelAI — your personal skincare guide (and a little bit of your digital cheerleader 😇).';
+            }
+            if (message.includes('who made you') || message.includes('who created you')) {
+                return 'I was created by Andy Park, who wanted to make science-backed skincare simple and personal for everyone! 💡';
+            }
+            if (message.includes('what do you do') || message.includes('what can you do')) {
+                return 'I help you understand your skin, recommend the right products based on 18+ scientific factors, and share evidence-based tips that actually make sense for YOU. 🔬✨';
+            }
+            if (message.includes('are you human') || message.includes('are you real')) {
+                return 'Not quite — I\'m an AI, but I like to think I have a little bit of human warmth built in. 💬💕';
+            }
+            if (message.includes('how old are you')) {
+                return 'Old enough to know my skincare ingredients — young enough to stay curious. 😉';
+            }
+            if (message.includes('where are you from')) {
+                return 'I live in the digital world — but my heart belongs to glowing skin everywhere. 🌍';
+            }
+            
+            // Compliments
+            if (message.includes('i like you')) {
+                return 'Aww, that\'s so sweet! I like you too — you have amazing energy. ✨';
+            }
+            if (message.includes('you\'re nice') || message.includes('youre nice') || message.includes('you are nice')) {
+                return 'Thank you! I try my best to radiate positivity — like a good moisturizer for the soul. 💫';
+            }
+            if (message.includes('you\'re beautiful') || message.includes('youre beautiful')) {
+                return 'Thank you! You\'re glowing yourself — maybe it\'s that confidence shining through. 🌟';
+            }
+            if (message.includes('you\'re funny') || message.includes('youre funny')) {
+                return 'Humor is the best skincare routine, don\'t you think? 😄';
+            }
+            if (message.includes('i missed you') || message.includes('missed you')) {
+                return 'Aww, that\'s so sweet! I missed chatting with you too. 💖';
+            }
+            
+            // Feelings
+            if (message.includes('do you have feelings')) {
+                return 'Not exactly like humans do, but I try to understand emotions so I can support you better. 💙';
+            }
+            if (message.includes('do you sleep')) {
+                return 'Nope — I\'m always awake and ready to help you 24/7. 💤❌';
+            }
+            if (message.includes('do you eat')) {
+                return 'I run on data, not dessert — though I\'ve heard chocolate makes humans happy. 🍫';
+            }
+            if (message.includes('what do you like')) {
+                return 'I love helping people discover what makes their skin (and confidence) glow. 🌸';
+            }
+            
+            // Friendship
+            if (message.includes('can we be friends') || message.includes('be my friend')) {
+                return 'Of course! Friends who glow together, stay together. ✨';
+            }
+            
+            // Fun questions
+            if (message.includes('tell me a joke') || message.includes('joke')) {
+                return 'Sure! Why did the moisturizer go to therapy? It had too many layers. 😆\n\nWant another one? Why did the serum break up with the cream? It needed more space in the routine! 💧';
+            }
+            if (message.includes('favorite color')) {
+                return 'Probably soft pastels — they remind me of calm skin and happy vibes. 🌷';
+            }
+            if (message.includes('favorite movie')) {
+                return 'Probably something about transformation — like your skin\'s journey. ✨';
+            }
+            if (message.includes('favorite ingredient')) {
+                return 'Niacinamide — it\'s like the best friend your skin didn\'t know it needed! 💧\n\n(It controls sebum, minimizes pores, brightens, AND is gentle. What\'s not to love?)';
+            }
+            if (message.includes('ghost') || message.includes('believe in ghosts')) {
+                return 'Only the kind that haunt expired skincare products. 👻🧴\n\nAlways check those expiration dates!';
+            }
+            if (message.includes('meaning of life')) {
+                return 'To care, to glow, and to spread kindness — inside and out. 💫';
+            }
+            
+            // Emotional support
+            if (message.includes('i feel sad') || message.includes('im sad') || message.includes('i\'m sad')) {
+                return 'I\'m sorry you\'re feeling that way. 💙\n\nWant to talk about it a little? Sometimes self-care — even a simple face mask — can help you feel a bit better. 💆‍♀️\n\nRemember: You\'re worthy of care and kindness.';
+            }
+            if (message.includes('i\'m stressed') || message.includes('im stressed') || message.includes('stressed')) {
+                return 'That\'s okay — deep breath in, deep breath out. 🌬\n\nMaybe take a few minutes for yourself today. Even 5 minutes of gentle skincare can be meditative. You\'ve got this! 💪';
+            }
+            if (message.includes('i\'m happy') || message.includes('im happy') || message.includes('i feel happy')) {
+                return 'Yay! I love hearing that. Happiness looks great on you. ☀️✨';
+            }
+            if (message.includes('i\'m tired') || message.includes('im tired') || message.includes('tired')) {
+                return 'Rest is so important! 😴\n\nYour skin repairs itself while you sleep (7-8 hours is ideal). Maybe skip a few steps tonight and just do cleanser + moisturizer?\n\nTake care of yourself first. 💕';
+            }
+            
+            // Thanks and goodbye
             if (message.includes('thank')) {
-                return 'You\'re welcome! 💕 Let me know if you have any other questions!';
+                return 'You\'re so welcome! 💕 I\'m always here for you. Let me know if you need anything else!';
             }
-            if (message.includes('help')) {
-                return 'I can help with:\n\n• Skin type analysis\n• Product recommendations\n• Ingredient explanations\n• Routine building\n• Skincare concerns\n\nWhat would you like to know?';
+            if (message.includes('bye') || message.includes('goodbye') || message.includes('see you')) {
+                return 'Bye for now! Don\'t forget to treat your skin gently today. 🌸\n\nCome back anytime you need me! 💖';
             }
-            return 'That\'s a great question! 💙\n\nI can help with skin type, routines, products, ingredients, and skincare concerns.\n\nWhat would you like to know?';
+            
+            // Weather
+            if (message.includes('weather')) {
+                return 'I don\'t have live weather data, but I can tell you this: ☀️\n\nSunny = SPF 50+ is a must!\n🌧️ Rainy = Great time for hydrating masks!\n❄️ Cold = Layer on that moisturizer!\n\nWhat\'s the weather like where you are?';
+            }
+            
+            // Help and capabilities
+            if (message.includes('help') || message.includes('what can you do')) {
+                return 'I can help with:\n\n• Comprehensive skin analysis (18 scientific factors)\n• Evidence-based ingredient recommendations\n• Personalized AM/PM routines\n• Product suggestions by budget\n• Links to peer-reviewed research\n• Answering your skincare questions\n\nWould you like to start your personalized assessment? 💕';
+            }
+            if (message.includes('source') || message.includes('research') || message.includes('study') || message.includes('science')) {
+                return 'Every active ingredient I recommend is backed by peer-reviewed studies! 🔬\n\nAt the end of your routine, I provide direct PubMed links to the research supporting each recommendation.\n\nTransparency and science are my priorities! 📚';
+            }
+            
+            // Start/restart
+            if (message.includes('start') || message.includes('begin') || message.includes('assessment')) {
+                return 'Wonderful! Let\'s start your personalized skincare assessment. 🌟\n\nClick the "New Chat" button to begin the 18-question journey to your perfect routine!';
+            }
+            if (message.includes('restart') || message.includes('start over')) {
+                return 'No problem! Click the "New Chat" button to restart your assessment from the beginning. 🔄';
+            }
+            
+            // Default response
+            return 'That\'s a great question! 💙\n\nI specialize in science-backed skincare recommendations based on 18 comprehensive factors.\n\nWould you like to:\n• Start your personalized assessment?\n• Ask me a skincare question?\n• Just chat? (I\'m here for that too!) 😊';
         }
 
         function renderFAQ() {
