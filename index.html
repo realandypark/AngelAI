@@ -53,6 +53,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .tagline {
@@ -421,7 +427,7 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">AngelAI</div>
+            <div class="logo" onclick="startNewChat()">AngelAI</div>
             <div class="tagline">Science-backed personalized skincare</div>
         </header>
 
@@ -449,7 +455,7 @@
     <script>
         const questions = [
             { key: 'name', text: 'First, what\'s your name? 💕', options: [], textInput: true },
-            { key: 'sex', text: 'What is your biological sex?\n\n(Hormones influence sebum, barrier, and collagen balance)', options: ['Female', 'Male', 'Intersex / Other', 'Prefer not to say'] },
+            { key: 'sex', text: 'What is your biological sex?\n\n(Hormones influence sebum, barrier, and collagen balance)', options: ['Female', 'Male'] },
             { key: 'age', text: 'What is your age range?\n\n(Skin turnover, collagen, and photoaging change by decade)', options: ['Under 18', '18–24', '25–34', '35–44', '45–54', '55+'] },
             { key: 'skinType', text: 'What best describes your skin type?', options: ['Oily — shiny, enlarged pores, makeup slides off', 'Dry — tightness, flaking, rough texture', 'Combination — oily T-zone, dry cheeks', 'Normal — balanced, few issues', 'Sensitive — prone to stinging, redness, or reactions'] },
             { key: 'sensitivity', text: 'How sensitive is your skin?\n\n(Identifies tolerance threshold for actives like acids or retinoids)', options: ['Not sensitive — tolerate most products', 'Mildly sensitive — some tingling or redness occasionally', 'Very sensitive — frequent irritation, redness, or burning', 'Clinically sensitive — eczema, rosacea, dermatitis diagnosis'] },
